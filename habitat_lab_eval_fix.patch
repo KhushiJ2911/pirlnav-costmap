@@ -1,0 +1,13 @@
+diff --git a/habitat_baselines/rl/models/rnn_state_encoder.py b/habitat_baselines/rl/models/rnn_state_encoder.py
+index f2c8be21e..21d130e87 100644
+--- a/habitat_baselines/rl/models/rnn_state_encoder.py
++++ b/habitat_baselines/rl/models/rnn_state_encoder.py
+@@ -278,7 +278,7 @@ class RNNStateEncoder(nn.Module):
+         return hidden_states
+ 
+     def unpack_hidden(self, hidden_states: torch.Tensor) -> torch.Tensor:
+-        return hidden_states
++        return hidden_states.contiguous()
+ 
+     def single_forward(
+         self, x, hidden_states, masks

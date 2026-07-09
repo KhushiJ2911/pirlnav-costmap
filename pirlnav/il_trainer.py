@@ -291,12 +291,22 @@ class ILEnvDDPTrainer(PPOTrainer):
 
         self.agent.train()
 
+        num_accum_steps = self.config.NUM_ACCUM_STEPS
+        accumulate_gradients = num_accum_steps > 1
+
         (
             action_loss,
             rnn_hidden_states,
             dist_entropy,
             _,
-        ) = self.agent.update(self.rollouts)
+        ) = self.agent.update(
+            self.rollouts, accumulate_gradients, num_accum_steps
+        )
+
+        if accumulate_gradients and (
+            (self.num_updates_done + 1) % num_accum_steps == 0
+        ):
+            self.agent.apply_accumulated_gradients()
 
         self.rollouts.after_update(rnn_hidden_states)
         self.pth_time += time.time() - t_update_model
@@ -446,6 +456,7 @@ class ILEnvDDPTrainer(PPOTrainer):
                 losses = self._coalesce_post_step(
                     dict(
                         action_loss=action_loss,
+                        **getattr(self.agent, "bc_metrics", {}),
                         entropy=dist_entropy,
                     ),
                     count_steps_delta,
@@ -571,7 +582,7 @@ class ILEnvDDPTrainer(PPOTrainer):
 
         config.defrost()
         config.TASK_CONFIG.DATASET.SPLIT = config.EVAL.SPLIT
-        config.TASK_CONFIG.DATASET.TYPE = "ObjectNav-v1"
+        config.TASK_CONFIG.DATASET.TYPE = config.EVAL.DATASET_TYPE
         config.freeze()
 
         if (

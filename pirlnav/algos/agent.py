@@ -77,10 +77,12 @@ class ILAgent(nn.Module):
     def forward(self, *x):
         raise NotImplementedError
 
-    def update(self, rollouts) -> Tuple[float, float, float]:
+    def update(self, rollouts, accumulate_gradients=False, num_accum_steps=None) -> Tuple[float, float, float]:
         total_loss_epoch = 0.0
         total_entropy = 0.0
         total_action_loss = 0.0
+        total_accuracy = 0.0
+        total_top3 = 0.0
 
         profiling_wrapper.range_push("BC.update epoch")
         data_generator = rollouts.recurrent_generator(self.num_mini_batch)
@@ -105,9 +107,19 @@ class ILAgent(nn.Module):
             action_loss = cross_entropy_loss(
                 logits.permute(0, 2, 1), actions_batch.squeeze(-1)
             )
+            with torch.no_grad():
+                _target = actions_batch.squeeze(-1)
+                _pred = logits.argmax(dim=-1)
+                total_accuracy += (_pred == _target).float().mean().item()
+                _k = min(3, logits.size(-1))
+                _topk = logits.topk(_k, dim=-1).indices
+                total_top3 += (
+                    (_topk == _target.unsqueeze(-1)).any(dim=-1).float().mean().item()
+                )
             entropy_term = dist_entropy * self.entropy_coef
 
-            self.optimizer.zero_grad()
+            if not accumulate_gradients:
+                self.optimizer.zero_grad()
             inflections_batch = batch["observations"][
                 "inflection_weight"
             ].view(T, N, -1)
@@ -118,17 +130,22 @@ class ILAgent(nn.Module):
             ).mean()
             total_loss = action_loss_term - entropy_term
 
+            total_loss_epoch += total_loss.item()
+            total_action_loss += action_loss_term.item()
+            total_entropy += dist_entropy.item()
+
+            if accumulate_gradients:
+                total_loss = total_loss / num_accum_steps
+
             self.before_backward(total_loss)
             total_loss.backward()
             self.after_backward(total_loss)
 
-            self.before_step()
-            self.optimizer.step()
-            self.after_step()
+            if not accumulate_gradients:
+                self.before_step()
+                self.optimizer.step()
+                self.after_step()
 
-            total_loss_epoch += total_loss.item()
-            total_action_loss += action_loss_term.item()
-            total_entropy += dist_entropy.item()
             hidden_states.append(rnn_hidden_states)
 
         profiling_wrapper.range_pop()
@@ -138,6 +155,15 @@ class ILAgent(nn.Module):
         total_loss_epoch /= self.num_mini_batch
         total_entropy /= self.num_mini_batch
         total_action_loss /= self.num_mini_batch
+        total_accuracy /= self.num_mini_batch
+        total_top3 /= self.num_mini_batch
+
+        self.bc_metrics = {
+            "action_ce_loss": total_action_loss,
+            "action_accuracy": total_accuracy,
+            "top_1_action_accuracy": total_accuracy,
+            "top_3_action_accuracy": total_top3,
+        }
 
         return (
             total_loss_epoch,
@@ -145,6 +171,12 @@ class ILAgent(nn.Module):
             total_entropy,
             total_action_loss,
         )
+
+    def apply_accumulated_gradients(self) -> None:
+        self.before_step()
+        self.optimizer.step()
+        self.after_step()
+        self.optimizer.zero_grad()
 
     def before_backward(self, loss: Tensor) -> None:
         pass

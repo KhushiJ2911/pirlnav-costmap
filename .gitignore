@@ -1,6 +1,7 @@
 # python
 __pycache__/
 *.egg-info/
+*.pyc
 
 # jupyter
 .ipynb_checkpoints
@@ -29,3 +30,11 @@ tb/
 # slurm logs
 slurm_logs/
 
+# large generated artifacts (internship additions)
+video_dir/
+costmap_gen/sessions/
+costmap_gen/out/
+costmap_backup/
+.habitat-resume-state.pth
+*.pth
+*.ckpt
