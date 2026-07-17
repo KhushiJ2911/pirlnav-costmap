@@ -27,6 +27,12 @@ import shutil
 import time
 
 
+def _poskey(pos):
+    # Join key: habitat re-indexes episode_id on load (MTurk ids -> "0","1",...),
+    # so match generated replays to raw episodes by start_position instead.
+    return tuple(round(float(x), 3) for x in pos)
+
+
 def scene_files(src, split="train"):
     files = sorted(glob.glob(os.path.join(src, split, "content", "*.json.gz")))
     if not files:
@@ -192,7 +198,7 @@ def main():
                             best_d, best_vp = d, np.asarray(p)
 
                 if best_vp is None or not np.isfinite(best_d):
-                    replays[ep.episode_id] = (None, False)
+                    replays[_poskey(ep.start_position)] = (None, False)
                     continue
 
                 actions = []
@@ -204,7 +210,7 @@ def main():
                     actions.append(action_names.get(a, "STOP"))
                     env.step(a)
                 success = bool(env.get_metrics().get("success", 0.0) > 0)
-                replays[ep.episode_id] = (actions, success)
+                replays[_poskey(ep.start_position)] = (actions, success)
                 if (i + 1) % 50 == 0 or i + 1 == n:
                     ok = sum(1 for a, s in replays.values() if s)
                     print(
@@ -217,7 +223,7 @@ def main():
 
         kept = []
         for ep in raw["episodes"]:
-            actions, success = replays.get(ep["episode_id"], (None, False))
+            actions, success = replays.get(_poskey(ep["start_position"]), (None, False))
             if actions is None or (not success and not args.keep_failures):
                 grand_dropped += 1
                 continue
