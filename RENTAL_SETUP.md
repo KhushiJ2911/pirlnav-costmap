@@ -341,3 +341,35 @@ RGB-SP low — the interaction effect.
   after §7 passes, and change one thing at a time.
 - Costmap arm is CPU-hungry (sim + field builds): check CPU count; on weak-CPU rentals
   keep NUM_ENVIRONMENTS at 10.
+
+---
+
+## 11. 48-hour budget schedule
+
+Total box budget: 48 hours. Pace against this table; the contingency rules below are
+part of the plan, not optional.
+
+| Clock | Milestone |
+|---|---|
+| H0-H1 | box check; clone; START HM3D scene download in tmux FIRST; env build in parallel |
+| H1-H5 | env done, remaining downloads, patch, W&B, overfit_tiny |
+| H5-H6 | verification gauntlet passes (else stop and fix — do not proceed) |
+| H6-H8 | probe (smoke then full); SP demo generation started in parallel at H6 |
+| ~H8 | DECISION GATE on probe SR |
+| H8-H11 | demo generation finishes; INFLECTION_COEF saved |
+| H11-H28 | both training arms (GPUs 0/1); watchers on GPUs 2/3 from ~H12.5 |
+| H28-H44 | eval backlog |
+| H44-H48 | buffer: copy all checkpoints off the box (~4GB; only artifact not on W&B) |
+
+Contingency rules:
+1. If SP policies learn to STOP, eval is fast (~1-1.5h/ckpt) and everything fits with
+   ~10h spare.
+2. If eval is slow (~3-4h/ckpt): at H36, if a watcher hasn't reached ckpt.5, kill it,
+   keep what's evaluated, and eval ckpt.9 only via the list script. A 4-5 point curve
+   ending at the final checkpoint is sufficient.
+3. If the probe FAILS (low SR at H8): do NOT launch training. Dump probe failure
+   episodes for diagnosis, copy artifacts off, release the box early. Training
+   against an insufficient input is the only real way to waste this budget.
+
+Before connecting, have ready: Matterport token id+secret, WANDB_API_KEY, and GitHub
+repo access pre-arranged (fine-grained PAT for HTTPS clone is fastest).
