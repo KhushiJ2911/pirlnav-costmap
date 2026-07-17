@@ -75,11 +75,34 @@ def main():
                         help="keep episodes whose SP rollout did not succeed")
     parser.add_argument("--report-coef", metavar="DST", default=None,
                         help="only recompute INFLECTION_COEF over generated data")
+    parser.add_argument("--no-wandb", action="store_true")
+    parser.add_argument("--wandb-project", default="pirlnav-baseline")
     args = parser.parse_args()
 
     if args.report_coef:
         report_coef(args.report_coef, args.split)
         return
+
+    wb = None
+    if not args.no_wandb:
+        try:
+            import wandb as wb
+
+            wb.init(
+                project=args.wandb_project,
+                name=f"gen_sp_demos_s{args.shard_index}of{args.num_shards}",
+                config=dict(
+                    src=args.src,
+                    dst=args.dst,
+                    goal_radius=args.goal_radius,
+                    keep_failures=args.keep_failures,
+                    num_shards=args.num_shards,
+                    shard_index=args.shard_index,
+                ),
+            )
+        except Exception as e:
+            print(f"WARNING: wandb logging disabled ({e})")
+            wb = None
 
     import habitat
     import numpy as np
@@ -213,6 +236,16 @@ def main():
         grand_total += t
         grand_infl += i_
         print(f"[{scene}] wrote {len(kept)} episodes -> {out_path}")
+        if wb is not None:
+            wb.log(
+                dict(
+                    scenes_done=wb.run.step + 1 if wb.run.step else 1,
+                    kept_total=grand_kept,
+                    dropped_total=grand_dropped,
+                    steps_total=grand_total,
+                    inflections_total=grand_infl,
+                )
+            )
 
     print(
         f"DONE shard {args.shard_index}: kept {grand_kept}, dropped {grand_dropped}, "
@@ -220,6 +253,17 @@ def main():
         f"shard-local coef {grand_total / max(grand_infl, 1):.6f}"
     )
     print("After ALL shards finish, run --report-coef for the global coefficient.")
+    if wb is not None:
+        wb.summary.update(
+            dict(
+                kept=grand_kept,
+                dropped=grand_dropped,
+                steps=grand_total,
+                inflections=grand_infl,
+                shard_local_coef=grand_total / max(grand_infl, 1),
+            )
+        )
+        wb.finish()
 
 
 if __name__ == "__main__":

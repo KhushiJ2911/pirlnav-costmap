@@ -55,8 +55,11 @@ def merge(paths):
             for k, v in ep["metrics"].items():
                 stats[k].append(v)
     print(f"episodes: {n}")
+    summary = {"num_episodes": n}
     for k, v in sorted(stats.items()):
         print(f"  {k}: {np.mean(v):.4f}")
+        summary[k] = float(np.mean(v))
+    return summary
 
 
 def main():
@@ -70,13 +73,41 @@ def main():
     parser.add_argument("--stop-threshold", type=float, default=0.25)
     parser.add_argument("--merge", nargs="+", default=None,
                         help="merge shard output JSONs and exit (no simulator)")
+    parser.add_argument("--no-wandb", action="store_true")
+    parser.add_argument("--wandb-project", default="pirlnav-baseline")
     args = parser.parse_args()
+
+    wb = None
+    if not args.no_wandb:
+        try:
+            import wandb as wb
+
+            wb.init(
+                project=args.wandb_project,
+                name=(
+                    "probe_greedy_combined"
+                    if args.merge
+                    else f"probe_greedy_s{args.shard_index}of{args.num_shards}"
+                ),
+                config=dict(
+                    stop_threshold=args.stop_threshold,
+                    num_shards=args.num_shards,
+                    shard_index=args.shard_index,
+                    split=args.split,
+                ),
+            )
+        except Exception as e:
+            print(f"WARNING: wandb logging disabled ({e})")
+            wb = None
 
     if args.merge:
         paths = []
         for pat in args.merge:
             paths.extend(glob.glob(pat))
-        merge(sorted(set(paths)))
+        summary = merge(sorted(set(paths)))
+        if wb is not None:
+            wb.summary.update(summary)
+            wb.finish()
         return
 
     # Habitat imports deferred so --merge works anywhere.
@@ -142,6 +173,17 @@ def main():
                     f"softSPL {sspl:.3f}  ({rate:.2f} ep/s)",
                     flush=True,
                 )
+                if wb is not None:
+                    wb.log(
+                        dict(
+                            episodes_done=i + 1,
+                            running_success=float(sr),
+                            running_spl=float(spl),
+                            running_softspl=float(sspl),
+                            eps_per_sec=float(rate),
+                        ),
+                        step=i + 1,
+                    )
     finally:
         env.close()
 
@@ -164,6 +206,9 @@ def main():
         )
     print("SUMMARY:", json.dumps(summary, indent=2))
     print("wrote", args.out)
+    if wb is not None:
+        wb.summary.update(dict(num_episodes=len(results), **summary))
+        wb.finish()
 
 
 if __name__ == "__main__":

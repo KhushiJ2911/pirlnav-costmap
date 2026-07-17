@@ -86,6 +86,10 @@ pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 torchaudio==0.12.1 \
 # Extras HANDOVER's env recipe requires:
 conda install -c conda-forge lmdb -y
 pip install webdataset==0.1.40
+
+# W&B (required: ALL experiments log to project pirlnav-baseline).
+# Latest wandb has dropped py3.7 — if the plain install fails, use the pin.
+pip install wandb || pip install "wandb==0.15.12"
 ```
 
 Verify:

@@ -5,6 +5,7 @@
 export GLOG_minloglevel=2 MAGNUM_LOG=quiet HABITAT_SIM_LOG=quiet
 export TMPDIR=$HOME/tmp
 mkdir -p "$TMPDIR" logs
+eval "$(grep 'WANDB_API_KEY' ~/.bashrc)"
 source ~/miniconda3/etc/profile.d/conda.sh 2>/dev/null || source ~/miniconda/etc/profile.d/conda.sh
 conda activate pirlnav
 cd ~/pirlnav
