@@ -38,3 +38,4 @@ costmap_backup/
 .habitat-resume-state.pth
 *.pth
 *.ckpt
+.venv/
