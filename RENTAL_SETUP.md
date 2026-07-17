@@ -302,16 +302,28 @@ tmux new -s train_cm_sp -d \
 # Reminder: losses/* are the only meaningful train metrics (teacher forcing).
 ```
 
-### 9.4 Experiment 2 step 3: eval both arms on full val (can start when ckpt.1 exists)
+### 9.4 Experiment 2 step 3: LIVE eval alongside training (start immediately after 9.3)
+
+No need to wait for training to finish. The watch scripts point habitat eval at the
+checkpoint FOLDER: it polls and evaluates every checkpoint as it lands, so the
+SR-vs-frames val curve builds on W&B while training runs. First behavioral numbers
+arrive ~3-5h after training starts (first checkpoint + one full-val eval).
 
 ```bash
 cd ~/pirlnav
-tmux new -s eval_rgb_sp -d "EVAL_GPU=2 bash run_eval_sp.sh"
-tmux new -s eval_cm_sp  -d "EVAL_GPU=3 bash run_eval_costmap_sp.sh"
-# Both skip checkpoints that don't exist yet — re-run them after training
-# finishes to pick up the remaining ckpts. Results land on W&B
-# (il_rgb_sp_eval / il_costmap_2ch_sp_eval).
+tmux new -s eval_rgb_sp -d "EVAL_GPU=2 bash run_eval_watch_sp.sh"
+tmux new -s eval_cm_sp  -d "EVAL_GPU=3 bash run_eval_watch_costmap_sp.sh"
+# W&B runs: il_rgb_sp_eval / il_costmap_2ch_sp_eval (project pirlnav-baseline).
+# NOTE: full-val eval (~2.5-4h/ckpt) is slower than the checkpoint cadence
+# (~1.5-1.7h), so the watcher lags behind and keeps working through the backlog
+# after training ends — that's expected. The poll loop never exits on its own:
+# kill each tmux session once ckpt.9 has been evaluated.
 ```
+
+Alternative (post-hoc only): `run_eval_sp.sh` / `run_eval_costmap_sp.sh` evaluate the
+fixed checkpoint list {1,3,5,7,9} — use these instead if you'd rather eval a subset
+after training, or to re-eval specific checkpoints later. Don't run both the watcher
+and the list script for the same arm at once (duplicate W&B points, wasted GPU).
 
 **The headline readout:** costmap-SP eval SR vs. RGB-SP eval SR vs. the two
 human-demo arms (both 0.000). Prediction (PROJECT_CONTEXT.md): costmap-SP high,
