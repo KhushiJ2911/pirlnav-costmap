@@ -243,11 +243,79 @@ SMOKE_GPU=0 bash run_smoke_costmap.sh
 #     just to confirm the patched eval harness loads and steps (Ctrl-C after it starts).
 ```
 
-Only after (a)+(b) pass is the box certified. Then proceed to the experiments
-(PROJECT_CONTEXT.md "next experiments"): the greedy-descent probe (eval-only) first,
-then B′ shortest-path demos if the probe passes.
+Only after (a)+(b) pass is the box certified. Then run the experiments — the full
+copy-paste sequence is §9 below.
 
-## 8. 4x 3090 usage notes
+---
+
+## 9. The experiments — exact command sequence (after §7 passes)
+
+### 9.1 Experiment 1: greedy-descent probe (eval-only, no training cost)
+
+```bash
+cd ~/pirlnav
+conda activate pirlnav
+
+# (i) cheap API shakeout first — 5 episodes, single process, ~2 min:
+python run_probe_greedy.py --max-episodes 5 --out logs/probe_smoke.json
+
+# (ii) full 1000-episode val run, 4 shards in parallel (do this in tmux;
+#      several hours if the probe fails episodes at the 500-step cap):
+tmux new -s probe
+bash run_probe.sh 4
+# -> prints combined SR / SPL / softSPL at the end; per-shard JSONs in logs/
+```
+
+**Decision gate:** high SR → input is sufficient, teacher was the bottleneck →
+proceed to 9.2. Low SR → inspect failures before training anything (FOV / depth
+window / 64x64 may be insufficient — see PROJECT_CONTEXT.md). Optional knob:
+`--stop-threshold` (default 0.25m).
+
+### 9.2 Experiment 2 step 1: generate shortest-path demos (CPU-bound, ~hours)
+
+```bash
+cd ~/pirlnav
+tmux new -s gensp
+bash run_gen_sp_demos.sh 8
+# safe to re-run after interruption — finished scenes are skipped.
+# FINAL LINE prints:  suggested TASK.INFLECTION_WEIGHT_SENSOR.INFLECTION_COEF = <X>
+# SAVE THAT NUMBER — the training scripts require it.
+```
+
+### 9.3 Experiment 2 step 2: train both arms in parallel (1 GPU-day each)
+
+```bash
+cd ~/pirlnav
+COEF=<X-from-9.2>
+
+tmux new -s train_rgb_sp -d \
+  "INFLECTION_COEF=$COEF TRAIN_GPU=0 bash run_train_1gpu_sp.sh"
+tmux new -s train_cm_sp -d \
+  "INFLECTION_COEF=$COEF TRAIN_GPU=1 bash run_train_costmap_1gpu_sp.sh"
+
+# watch: tmux attach -t train_cm_sp ; W&B runs il_rgb_sp_10env_acc51 /
+# il_costmap_2ch_sp_10env_acc51 in project pirlnav-baseline.
+# Reminder: losses/* are the only meaningful train metrics (teacher forcing).
+```
+
+### 9.4 Experiment 2 step 3: eval both arms on full val (can start when ckpt.1 exists)
+
+```bash
+cd ~/pirlnav
+tmux new -s eval_rgb_sp -d "EVAL_GPU=2 bash run_eval_sp.sh"
+tmux new -s eval_cm_sp  -d "EVAL_GPU=3 bash run_eval_costmap_sp.sh"
+# Both skip checkpoints that don't exist yet — re-run them after training
+# finishes to pick up the remaining ckpts. Results land on W&B
+# (il_rgb_sp_eval / il_costmap_2ch_sp_eval).
+```
+
+**The headline readout:** costmap-SP eval SR vs. RGB-SP eval SR vs. the two
+human-demo arms (both 0.000). Prediction (PROJECT_CONTEXT.md): costmap-SP high,
+RGB-SP low — the interaction effect.
+
+---
+
+## 10. 4x 3090 usage notes
 
 - The certified configs are 1-GPU. Simplest use of 4 GPUs: run independent jobs in
   parallel (e.g. exp-2's RGB arm on GPU 0, costmap arm on GPU 1, evals on 2/3), each
