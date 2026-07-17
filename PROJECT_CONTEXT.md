@@ -81,19 +81,30 @@ teacher-forced replay and meaningless; only `losses/*` matter at train time.
 
 ## The next experiments (decided; from HANDOVER §4)
 
-**Experiment 1 — scripted greedy-descent probe (FIRST; not yet run; nothing built yet).**
-~50 lines, eval-only, zero training: turn toward min visible cost, forward, STOP when
-near-zero cost visible. High SR → input sufficient, teacher is the bottleneck → run
-exp 2. Low SR → representation insufficient (FOV / 5m depth window / 64x64) → fix the
-input before any training. Build it by reusing `CostmapSensor` + the eval-loop skeleton
-in `il_trainer.py::_eval_checkpoint`, replacing `actor_critic.act()` with the greedy
-rule. Design caveat: greedy descent is myopic (min-cost pixel can be across a wall);
-decide the sufficiency criterion before running.
+**Experiment 1 — scripted greedy-descent probe (FIRST; not yet run; scripts READY).**
+Eval-only, zero training: turn toward min visible cost, forward, STOP when near-zero
+cost visible. High SR → input sufficient, teacher is the bottleneck → run exp 2. Low
+SR → representation insufficient (FOV / 5m depth window / 64x64) → fix the input
+before any training. Scripts (written 2026-07-17, logic unit-tested on CPU, not yet
+run against the simulator): `probe_policy.py` (pure-numpy controller: greedy descent
++ scan-when-blind + collision sidestep + oscillation breaker; tests in
+`test_probe_policy.py`), `run_probe_greedy.py` (habitat harness, scene-sharded,
+`--merge` to combine shards), `run_probe.sh` (runs 4 shards + merged summary).
+Design caveat: greedy descent is myopic (min-cost pixel can be across a wall); treat
+"high SR" as the sufficiency signal, but a mid/low SR needs inspection before
+concluding the input is insufficient.
 
-**Experiment 2 — B′, shortest-path demos (conditional on exp 1 passing).**
+**Experiment 2 — B′, shortest-path demos (conditional on exp 1 passing; scripts READY).**
 Regenerate demos with habitat's `ShortestPathFollower` (SPL-optimal teacher), write
 them in the same HD-demo format so `DEMONSTRATION_SENSOR` replays them unchanged, and
-rerun BOTH arms (RGB + costmap) at the same matched budget. The sharp prediction (the
+rerun BOTH arms (RGB + costmap) at the same matched budget. Scripts (written
+2026-07-17, not yet run): `generate_sp_demos.py` + `run_gen_sp_demos.sh` (scene-sharded
+generation into `data/datasets/objectnav/objectnav_hm3d_sp_gen/`, drops
+unreachable/failed episodes, reports the recomputed INFLECTION_COEF), then
+`run_train_1gpu_sp.sh` (RGB arm) and `run_train_costmap_1gpu_sp.sh` (costmap arm) —
+both REQUIRE the `INFLECTION_COEF` env var from the generator's report. Eval with the
+existing `run_eval.sh` / `run_eval_costmap.sh` pointed at the new checkpoint folders
+(`il_rgb_sp`, `il_costmap_2ch_sp`). The sharp prediction (the
 publishable interaction effect): PIRLNav's paper shows SP demos are a *terrible*
 teacher for RGB (6.4% SR vs 64.1% on human demos — the policy can't see the privileged
 map the SP teacher follows), but the costmap arm DOES see that map (the oracle geodesic
