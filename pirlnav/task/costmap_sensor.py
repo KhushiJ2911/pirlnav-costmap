@@ -45,7 +45,12 @@ class CostmapSensor(Sensor):
         # category): <= n_categories distinct fields per scene. Cache them so the
         # expensive _build_field runs once per (scene, category), not per episode.
         self._field_cache = OrderedDict()
-        self._field_cache_cap = 16
+        # Cover all (scene, category) fields a worker can encounter in full
+        # multi-scene training (80 scenes x 6 categories = 480). With the old
+        # cap of 16 the LRU thrashed under multi-scene training — evicting and
+        # rebuilding expensive geodesic fields every few steps, stalling
+        # throughput. Fields are tiny (~200KB), so caching all is cheap.
+        self._field_cache_cap = 512
 
         super().__init__(config=config)
 
