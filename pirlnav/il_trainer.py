@@ -125,7 +125,7 @@ class ILEnvDDPTrainer(PPOTrainer):
 
             self.config.defrost()
             self.config.TORCH_GPU_ID = local_rank
-            self.config.SIMULATOR_GPU_ID = local_rank
+            self.config.SIMULATOR_GPU_ID = int(os.environ.get("SIM_GPU_ID", local_rank))
             # Multiply by the number of simulators to make sure they also get unique seeds
             self.config.TASK_CONFIG.SEED += (
                 torch.distributed.get_rank() * self.config.NUM_ENVIRONMENTS

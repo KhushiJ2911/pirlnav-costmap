@@ -173,6 +173,16 @@ class ILAgent(nn.Module):
         )
 
     def apply_accumulated_gradients(self) -> None:
+        # NaN/inf guard: skip the optimizer step if any gradient is non-finite,
+        # so one bad batch cannot corrupt the weights into NaN (SP-demo targets
+        # are sharp and occasionally produce gradient spikes).
+        finite = all(
+            (p.grad is None) or bool(torch.isfinite(p.grad).all())
+            for p in self.actor_critic.parameters()
+        )
+        if not finite:
+            self.optimizer.zero_grad()
+            return
         self.before_step()
         self.optimizer.step()
         self.after_step()

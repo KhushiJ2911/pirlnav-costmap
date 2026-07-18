@@ -94,8 +94,17 @@ class CostmapSensor(Sensor):
         sp = habitat_sim.MultiGoalShortestPath()
         sp.requested_ends = np.asarray(goals, dtype=np.float32)
 
-        for x in np.arange(lo[0], hi[0], self.grid_res):
-            for z in np.arange(lo[2], hi[2], self.grid_res):
+        # Adaptive grid step: keep the fine grid_res for normal scenes, but
+        # coarsen for monster scenes so a single field build cannot blow up.
+        # Some HM3D navmeshes are huge; a 0.2m grid there = >100k pathfinding
+        # queries = tens of minutes, stalling training. Cap total grid points.
+        step = self.grid_res
+        span_x = float(hi[0] - lo[0]); span_z = float(hi[2] - lo[2])
+        if (span_x / step) * (span_z / step) > 15000.0:
+            step = ((span_x * span_z) / 15000.0) ** 0.5
+
+        for x in np.arange(lo[0], hi[0], step):
+            for z in np.arange(lo[2], hi[2], step):
 
                 p = pf.snap_point(
                     np.array([x, y0, z], np.float32)
