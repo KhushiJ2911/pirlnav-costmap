@@ -72,6 +72,13 @@
   .legend{display:flex;flex-wrap:wrap;gap:16px;margin:14px 0 0;font-size:13px;color:var(--ink2)}
   .legend span{display:inline-flex;align-items:center;gap:7px}
   .dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+  figure.fig{margin:18px 0 4px}
+  .figrow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media (max-width:560px){.figrow{grid-template-columns:1fr}}
+  .figrow img{width:100%;height:auto;display:block;border:1px solid var(--border);border-radius:8px;background:var(--surface)}
+  .figrow figure{margin:0}
+  .figrow .step{font-size:11px;color:var(--muted);text-align:center;margin-top:5px}
+  figcaption{color:var(--ink2);font-size:13.5px;margin-top:12px;line-height:1.55}
   .toc{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:14px;margin:10px 0 0}
   .toc a{color:var(--ink2)}
   footer{padding:32px 0 60px;color:var(--muted);font-size:14px}
@@ -147,6 +154,20 @@
     <li><strong>Ch 0 — absolute cost</strong> (<code>cost/max</code>): “how far is the goal” → the STOP cue.</li>
     <li><strong>Ch 1 — per-frame contrast-stretched cost</strong>: “which way is downhill” → the steering cue.</li>
   </ul>
+  <figure class="fig">
+    <div class="figrow">
+      <div><img src="figs/cm_step0.png" alt="2-channel costmap at rollout step 0"><div class="step">rollout step 0</div></div>
+      <div><img src="figs/cm_step3.png" alt="2-channel costmap at rollout step 3"><div class="step">step 3</div></div>
+      <div><img src="figs/cm_step6.png" alt="2-channel costmap at rollout step 6"><div class="step">step 6</div></div>
+    </div>
+    <figcaption>The actual 2-channel costmap the policy sees, at three steps of one
+    rollout. In each frame <strong>the left half is channel 0</strong> (absolute geodesic
+    cost — deep blue is low cost near the goal; the red spikes are out-of-depth pixels
+    clamped to max cost, which is itself the STOP cue), and <strong>the right half is
+    channel 1</strong> (the same field contrast-stretched per frame, exposing the
+    “downhill” gradient the agent steers along). This is the WayPixel-style signal the
+    shortest-path teacher follows — and what the costmap arm receives instead of RGB.</figcaption>
+  </figure>
   <p>This made the input learnable at train time (a 1-scene overfit reaches loss 0.0 /
   100% accuracy — the pipeline is certified correct).</p>
 </div></section>
