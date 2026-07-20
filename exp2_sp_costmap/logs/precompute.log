@@ -1,0 +1,79 @@
+total 448 | already done 0 | to build 448
+progress 50  {'geodesic': 50}
+progress 50  {'geodesic': 50}
+progress 100  {'geodesic': 100}
+progress 100  {'geodesic': 100}
+progress 100  {'geodesic': 100}
+progress 100  {'geodesic': 100}
+progress 100  {'geodesic': 100}
+progress 100  {'geodesic': 100}
+progress 100  {'geodesic': 100}
+progress 100  {'geodesic': 100}
+progress 100  {'geodesic': 100}
+progress 100  {'geodesic': 100}
+progress 150  {'geodesic': 150}
+progress 150  {'geodesic': 150}
+progress 200  {'geodesic': 200}
+progress 200  {'geodesic': 200}
+progress 200  {'geodesic': 200}
+progress 200  {'geodesic': 200}
+progress 200  {'geodesic': 200}
+progress 200  {'geodesic': 200}
+progress 200  {'geodesic': 200}
+progress 200  {'geodesic': 200}
+progress 200  {'geodesic': 200}
+progress 200  {'geodesic': 200}
+progress 200  {'geodesic': 200}
+progress 200  {'geodesic': 200}
+progress 200  {'geodesic': 200}
+progress 200  {'geodesic': 200}
+progress 200  {'geodesic': 200}
+progress 200  {'geodesic': 200}
+progress 200  {'geodesic': 200}
+progress 200  {'geodesic': 200}
+progress 200  {'geodesic': 200}
+progress 200  {'geodesic': 200}
+progress 250  {'geodesic': 250}
+progress 250  {'geodesic': 250}
+progress 250  {'geodesic': 250}
+progress 300  {'geodesic': 300}
+progress 300  {'geodesic': 300}
+progress 350  {'geodesic': 350}
+progress 350  {'geodesic': 350}
+progress 350  {'geodesic': 350}
+progress 350  {'geodesic': 350}
+progress 350  {'geodesic': 350}
+progress 350  {'geodesic': 350}
+progress 350  {'geodesic': 350}
+progress 350  {'geodesic': 350}
+progress 350  {'geodesic': 350}
+progress 350  {'geodesic': 350}
+progress 350  {'geodesic': 350}
+progress 350  {'geodesic': 350}
+progress 350  {'geodesic': 350}
+progress 350  {'geodesic': 350}
+progress 350  {'geodesic': 350}
+progress 350  {'geodesic': 350}
+progress 350  {'geodesic': 350}
+progress 350  {'geodesic': 350}
+  TIMEOUT->euclidean: g7hUFVNac26.basis.glb sofa (361s)
+progress 400  {'geodesic': 399, 'euclidean_timeout': 1}
+progress 400  {'geodesic': 399, 'euclidean_timeout': 1}
+progress 400  {'geodesic': 399, 'euclidean_timeout': 1}
+progress 400  {'geodesic': 399, 'euclidean_timeout': 1}
+progress 400  {'geodesic': 399, 'euclidean_timeout': 1}
+progress 400  {'geodesic': 399, 'euclidean_timeout': 1}
+progress 400  {'geodesic': 399, 'euclidean_timeout': 1}
+progress 400  {'geodesic': 399, 'euclidean_timeout': 1}
+progress 400  {'geodesic': 399, 'euclidean_timeout': 1}
+progress 400  {'geodesic': 399, 'euclidean_timeout': 1}
+progress 400  {'geodesic': 399, 'euclidean_timeout': 1}
+progress 400  {'geodesic': 399, 'euclidean_timeout': 1}
+progress 400  {'geodesic': 399, 'euclidean_timeout': 1}
+progress 400  {'geodesic': 399, 'euclidean_timeout': 1}
+progress 400  {'geodesic': 399, 'euclidean_timeout': 1}
+progress 400  {'geodesic': 399, 'euclidean_timeout': 1}
+progress 400  {'geodesic': 399, 'euclidean_timeout': 1}
+progress 400  {'geodesic': 399, 'euclidean_timeout': 1}
+DONE. counts: {'geodesic': 447, 'euclidean_timeout': 1}
+PRECOMPUTE-EXIT-0

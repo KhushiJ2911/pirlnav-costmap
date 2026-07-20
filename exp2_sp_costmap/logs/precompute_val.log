@@ -1,0 +1,18 @@
+total 193 | already done 0 | to build 193
+progress 50  {'geodesic': 50}
+progress 50  {'geodesic': 50}
+progress 50  {'geodesic': 50}
+progress 100  {'geodesic': 100}
+progress 150  {'geodesic': 150}
+progress 150  {'geodesic': 150}
+progress 150  {'geodesic': 150}
+progress 150  {'geodesic': 150}
+progress 150  {'geodesic': 150}
+progress 150  {'geodesic': 150}
+progress 150  {'geodesic': 150}
+progress 150  {'geodesic': 150}
+progress 150  {'geodesic': 150}
+progress 150  {'geodesic': 150}
+  TIMEOUT->euclidean: eF36g7L6Z9M.basis.glb bed (360s)
+DONE. counts: {'geodesic': 192, 'euclidean_timeout': 1}
+VAL-PRECOMPUTE-EXIT-0
