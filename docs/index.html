@@ -175,6 +175,17 @@
       exposing the “downhill” gradient the agent steers along). This is the WayPixel-style
       signal the shortest-path teacher follows.</figcaption>
     </figure>
+    <h3 class="has-text-centered" style="margin-top:1.7rem">The costmap in action</h3>
+    <figure style="margin:0.7rem 0">
+      <img src="figs/rollout.gif" alt="Agent navigating with its live cost-to-goal costmap" style="width:100%;max-width:780px;display:block;margin:0 auto;border:1px solid var(--line);border-radius:8px">
+      <img src="figs/rollout_topdown.png" alt="Top-down trajectory descending the cost-to-goal field" style="width:100%;max-width:520px;display:block;margin:1rem auto 0;border:1px solid var(--line);border-radius:8px">
+      <figcaption class="has-text-centered">A rollout on a real held-out HM3D scene (find the
+      <em>bed</em>). <strong>Top</strong> — the agent's first-person view (left) beside the live
+      cost-to-goal costmap over that view (right): dark = low geodesic distance to the goal, and
+      the dark region draws closer as the agent advances. <strong>Bottom</strong> — the top-down
+      path, descending the cost field from high (yellow) to zero at the goal (purple).
+      Navigating <em>is</em> just descending the costmap.</figcaption>
+    </figure>
   </div>
 </section>
 
