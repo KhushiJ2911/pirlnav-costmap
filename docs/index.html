@@ -101,6 +101,9 @@
       <p style="color:var(--ink2);margin:0">With human demos, both inputs hit a shared
       ceiling (0% success) — a budget/perception limit the costmap can't lift on its own.</p>
     </div>
+    <figure style="margin:1.8rem 0 0">
+      <img src="figs/success_all.png" alt="Success rate across all arms, both phases" style="width:100%;max-width:720px;display:block;margin:0 auto">
+    </figure>
   </div>
 </section>
 
@@ -136,6 +139,13 @@
     the navmesh; KD-tree lookup; cached per scene+category; validated against offline GT to
     MAE 0.06–0.10 m). Each step it back-projects the agent’s depth image onto that field to
     produce an egocentric costmap the policy sees instead of RGB.</p>
+    <figure style="margin:1.4rem 0">
+      <img src="figs/pipeline.png" alt="Costmap-conditioned PIRLNav architecture" style="width:100%;display:block">
+      <figcaption class="has-text-centered">The pipeline. The two arms are identical except
+      for the input: the costmap arm feeds the policy a 2-channel egocentric costmap derived
+      from the ground-truth geodesic field; the RGB baseline feeds a first-person image
+      through a pretrained encoder. Everything downstream (CNN + GRU policy) is shared.</figcaption>
+    </figure>
     <p><strong>The 2-channel fix (a key Phase-1 result).</strong> A naïve 1-channel costmap
     (globally scaled) left the within-frame gradient spanning only ~4% of the input range —
     the from-scratch encoder ignored it and the policy collapsed to the action-prior floor.
@@ -196,31 +206,9 @@
     <em>is</em> that signal</strong>, so the prediction is an interaction effect: SP demos
     should stay bad for RGB but become more learnable through the costmap. Both arms were
     retrained on SP demos at the same 8M-frame budget and evaluated on the same held-out split.</p>
-    <div class="columns">
-      <div class="column"><div class="cardish chart"><h4>Success rate</h4><p class="unit">% solved · higher better</p>
-        <div class="bars">
-          <div class="bar"><span class="val">3.2</span><div class="fill" style="height:100%;background:var(--cm)"></div><span class="lbl">Costmap +SP</span></div>
-          <div class="bar"><span class="val">2.1</span><div class="fill" style="height:66%;background:var(--rgbm)"></div><span class="lbl">RGB+SP matched</span></div>
-          <div class="bar"><span class="val">1.8</span><div class="fill" style="height:56%;background:var(--rgb1)"></div><span class="lbl">RGB+SP lr1e-3</span></div>
-        </div></div></div>
-      <div class="column"><div class="cardish chart"><h4>SPL</h4><p class="unit">success × path efficiency</p>
-        <div class="bars">
-          <div class="bar"><span class="val">2.0</span><div class="fill" style="height:100%;background:var(--cm)"></div><span class="lbl">Costmap +SP</span></div>
-          <div class="bar"><span class="val">1.1</span><div class="fill" style="height:55%;background:var(--rgbm)"></div><span class="lbl">RGB+SP matched</span></div>
-          <div class="bar"><span class="val">0.86</span><div class="fill" style="height:43%;background:var(--rgb1)"></div><span class="lbl">RGB+SP lr1e-3</span></div>
-        </div></div></div>
-      <div class="column"><div class="cardish chart"><h4>softSPL</h4><p class="unit">goal-directed progress</p>
-        <div class="bars">
-          <div class="bar"><span class="val">.225</span><div class="fill" style="height:100%;background:var(--cm)"></div><span class="lbl">Costmap +SP</span></div>
-          <div class="bar"><span class="val">.166</span><div class="fill" style="height:74%;background:var(--rgbm)"></div><span class="lbl">RGB+SP matched</span></div>
-          <div class="bar"><span class="val">.176</span><div class="fill" style="height:78%;background:var(--rgb1)"></div><span class="lbl">RGB+SP lr1e-3</span></div>
-        </div></div></div>
-    </div>
-    <div class="legend">
-      <span><i class="dot" style="background:var(--cm)"></i>Costmap+SP</span>
-      <span><i class="dot" style="background:var(--rgbm)"></i>RGB+SP (matched lr 5e-4)</span>
-      <span><i class="dot" style="background:var(--rgb1)"></i>RGB+SP (lr 1e-3)</span>
-    </div>
+    <figure style="margin:1.2rem 0 0">
+      <img src="figs/results_sp.png" alt="Costmap+SP vs RGB+SP on Success, SPL and softSPL" style="width:100%;display:block">
+    </figure>
     <p class="tbl-note has-text-centered">Costmap+SP wins on all three: Success ×1.5, SPL ×1.8,
     softSPL ×1.35. Its final checkpoint is its best (monotonic 25k &gt; 20k &gt; 15k) — no
     overfitting collapse, hinting it would climb with more training.</p>
