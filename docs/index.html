@@ -13,7 +13,7 @@
     --rgbm:#008300;    /* rgb matched */
     --rgb1:#e87ba4;    /* rgb 1e-3 */
     --good:#006300;
-    --maxw:920px;
+    --maxw:940px;
   }
   @media (prefers-color-scheme: dark){
     :root:where(:not([data-theme="light"])){
@@ -27,43 +27,41 @@
   body{margin:0;background:var(--plane);color:var(--ink);
     font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6;font-size:17px}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
-  a{color:var(--cm);text-decoration:none}
-  a:hover{text-decoration:underline}
-  header.hero{padding:64px 0 28px;border-bottom:1px solid var(--border)}
+  a{color:var(--cm);text-decoration:none} a:hover{text-decoration:underline}
+  header.hero{padding:60px 0 26px;border-bottom:1px solid var(--border)}
   .kicker{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
-  h1{font-size:clamp(28px,5vw,42px);line-height:1.15;margin:.35em 0 .3em;font-weight:700}
-  .sub{font-size:clamp(17px,2.4vw,20px);color:var(--ink2);margin:0 0 18px}
+  h1{font-size:clamp(27px,5vw,40px);line-height:1.15;margin:.35em 0 .3em;font-weight:700}
+  .sub{font-size:clamp(16px,2.4vw,20px);color:var(--ink2);margin:0 0 18px}
   .byline{color:var(--ink2);font-size:15px;margin:6px 0 20px}
   .links{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
   .btn{border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:14px;
     font-weight:600;color:var(--ink);background:var(--surface);display:inline-flex;gap:7px}
   .btn:hover{border-color:var(--cm);text-decoration:none}
-  section{padding:38px 0;border-bottom:1px solid var(--border)}
-  h2{font-size:24px;margin:0 0 14px;font-weight:700}
-  h3{font-size:18px;margin:26px 0 8px;font-weight:650}
-  p{margin:0 0 14px}
-  .lead{font-size:19px;color:var(--ink2)}
-  ul{margin:0 0 14px;padding-left:22px}
-  li{margin:5px 0}
-  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;
+  section{padding:36px 0;border-bottom:1px solid var(--border)}
+  h2{font-size:24px;margin:0 0 6px;font-weight:700}
+  .phase{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--cm);font-weight:700;margin:0 0 6px}
+  h3{font-size:18px;margin:24px 0 8px;font-weight:650}
+  p{margin:0 0 14px} .lead{font-size:19px;color:var(--ink2)}
+  ul{margin:0 0 14px;padding-left:22px} li{margin:5px 0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;
     background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:1px 5px}
   .tablewrap{overflow-x:auto;margin:12px 0 6px;border:1px solid var(--border);border-radius:12px}
-  table{border-collapse:collapse;width:100%;font-size:15px;min-width:440px}
-  th,td{padding:10px 14px;text-align:right;border-bottom:1px solid var(--grid);font-variant-numeric:tabular-nums}
+  table{border-collapse:collapse;width:100%;font-size:15px;min-width:520px}
+  th,td{padding:10px 13px;text-align:right;border-bottom:1px solid var(--grid);font-variant-numeric:tabular-nums}
   th:first-child,td:first-child{text-align:left}
-  thead th{color:var(--ink2);font-weight:600;font-size:13px;letter-spacing:.02em}
+  thead th{color:var(--ink2);font-weight:600;font-size:13px}
   tbody tr:last-child td{border-bottom:none}
   .win{color:var(--good);font-weight:700}
+  .zero{color:var(--muted)}
   .cap{color:var(--muted);font-size:13px;margin:8px 2px 0}
   .callout{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--cm);
-    border-radius:10px;padding:16px 18px;margin:16px 0}
+    border-radius:10px;padding:15px 17px;margin:16px 0}
   .callout.warn{border-left-color:#eda100}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
   @media (max-width:640px){.grid2{grid-template-columns:1fr}}
-  /* charts */
   .charts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:14px 0 4px}
   @media (max-width:640px){.charts{grid-template-columns:1fr}}
-  .chart{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 14px 12px}
+  .chart{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px}
   .chart h4{margin:0 0 2px;font-size:14px;font-weight:650}
   .chart .unit{color:var(--muted);font-size:12px;margin:0 0 12px}
   .bars{display:flex;align-items:flex-end;gap:14px;height:150px;padding-top:6px}
@@ -74,225 +72,247 @@
   .legend{display:flex;flex-wrap:wrap;gap:16px;margin:14px 0 0;font-size:13px;color:var(--ink2)}
   .legend span{display:inline-flex;align-items:center;gap:7px}
   .dot{width:11px;height:11px;border-radius:3px;display:inline-block}
-  footer{padding:34px 0 60px;color:var(--muted);font-size:14px}
+  .toc{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:14px;margin:10px 0 0}
+  .toc a{color:var(--ink2)}
+  footer{padding:32px 0 60px;color:var(--muted);font-size:14px}
 </style>
 </head>
 <body>
 <header class="hero"><div class="wrap">
   <div class="kicker">Internship Project · ObjectNav · Imitation Learning</div>
   <h1>Costmap-Conditioned PIRLNav</h1>
-  <p class="sub">Does conditioning behavior cloning on a ground-truth geodesic
-  “costmap” let a policy learn from shortest-path demos where RGB cannot — and
-  generalize better on unseen scenes?</p>
-  <p class="byline">Khushi Jaiswal · COEP Technological University ·
-  built on <a href="https://arxiv.org/abs/2301.07302">PIRLNav</a> +
-  the WayPixel costmap idea from <a href="https://mast3r-nav.github.io/">MASt3R-Nav</a></p>
+  <p class="sub">Does conditioning ObjectNav behavior cloning on a ground-truth
+  geodesic “costmap” instead of RGB change what a policy can learn — across human
+  and shortest-path demonstrations?</p>
+  <p class="byline">Khushi Jaiswal · COEP Technological University · built on
+  <a href="https://arxiv.org/abs/2301.07302">PIRLNav</a> (CVPR 2023) + the WayPixel
+  costmap idea from <a href="https://mast3r-nav.github.io/">MASt3R-Nav</a></p>
   <div class="links">
     <a class="btn" href="https://github.com/KhushiJ2911/pirlnav-costmap">Code ↗</a>
     <a class="btn" href="https://wandb.ai/jaiswalkhushi2911-coep-technological-university-/pirlnav-baseline">W&amp;B runs ↗</a>
-    <a class="btn" href="https://arxiv.org/abs/2301.07302">PIRLNav paper ↗</a>
-    <a class="btn" href="#results">Jump to results ↓</a>
+    <a class="btn" href="https://arxiv.org/abs/2301.07302">PIRLNav ↗</a>
+    <a class="btn" href="#results">Results ↓</a>
+  </div>
+  <div class="toc">
+    <a href="#question">Question</a><a href="#method">Method</a>
+    <a href="#phase1">Phase 1 · Human demos</a><a href="#phase2">Phase 2 · SP demos</a>
+    <a href="#results">Results</a><a href="#ceiling">Why it’s capped</a>
+    <a href="#eng">Engineering</a><a href="#future">Future work</a>
   </div>
 </div></header>
 
 <section><div class="wrap">
   <h2>TL;DR</h2>
-  <p class="lead">At a <strong>matched 8M-frame budget</strong>, conditioning the
-  policy on the costmap generalizes <strong>better than RGB on every metric</strong>
-  when learning from shortest-path (SP) demos — Success <strong>3.2% vs 2.1%</strong>,
-  SPL <strong>2.0% vs 1.1%</strong>, softSPL <strong>0.225 vs 0.166</strong> on the
-  held-out 1000-episode HM3D-v2 val split.</p>
-  <div class="callout warn"><strong>Honest caveat.</strong> Absolute numbers are low
-  for <em>both</em> arms. That’s a shared ceiling — the run is ~0.8 epoch vs the
-  paper’s ~33 (≈62× fewer frames, 1 GPU vs 64), and the perception setup (FOV / 5 m
-  depth / resolution) caps everyone. The costmap can’t lift that ceiling; it does
-  measurably better <em>beneath</em> it. The comparison is valid because both arms
-  ran at the identical budget.</p>
+  <p class="lead">Over two phases I built a costmap-conditioned PIRLNav and asked
+  whether an oracle geodesic input beats RGB. <strong>Phase 1 (human demos)</strong>
+  found a hard ceiling — <em>both</em> RGB and costmap scored <strong>0.0% success</strong>
+  on held-out val (vs the paper’s 64%). <strong>Phase 2 (shortest-path demos)</strong>
+  isolated the costmap’s contribution under a cleaner teacher:
+  <strong>costmap+SP beats RGB+SP on every metric</strong> (Success 3.2% vs 2.1%,
+  SPL 2.0% vs 1.1%, softSPL 0.225 vs 0.166) at a matched 8M-frame budget.</p>
+  <div class="callout"><strong>The takeaway.</strong> The costmap interface
+  <em>does</em> help — it changes which teachers are learnable and generalizes better
+  than RGB from shortest-path demos. But absolute performance is capped by a shared
+  ceiling (an ~0.8-epoch budget vs the paper’s ~33, and a limited FOV/depth
+  perception), which no input channel can lift on its own.</div>
 </div></section>
 
-<section><div class="wrap">
-  <h2>The question</h2>
-  <p>PIRLNav trains an ObjectNav policy by behavior cloning (BC) on human
-  demonstrations. Shortest-path (SP) demos — generated by an oracle that beelines
-  to the goal using privileged geodesic information — are a <em>terrible</em>
-  teacher for an RGB policy (the paper reports 6.4% success vs 64.1% for human
-  demos): the policy simply can’t see the privileged signal the teacher follows.</p>
-  <p>The <strong>costmap</strong> <em>is</em> that signal, made visible. So the
-  prediction is an <strong>interaction effect</strong>: SP demos should stay bad for
-  RGB but become <em>learnable</em> once the policy is conditioned on the costmap —
-  a result in neither the PIRLNav nor the MASt3R-Nav paper.</p>
+<section id="question"><div class="wrap">
+  <h2>Background &amp; the question</h2>
+  <p><a href="https://arxiv.org/abs/2301.07302">PIRLNav</a> trains ObjectNav agents by
+  behavior cloning (BC) on 77k human demonstrations (64.1% success), then RL-finetunes
+  to 70.4%. <a href="https://mast3r-nav.github.io/">MASt3R-Nav</a> shows a dense
+  per-pixel cost-to-goal representation (a “WayPixel costmap”) feeding a small
+  controller can beat end-to-end learning.</p>
+  <p class="lead">The internship question: <strong>if PIRLNav’s BC policy is
+  conditioned on an oracle (ground-truth) WayPixel-style costmap instead of RGB, does
+  ObjectNav’s difficulty collapse?</strong></p>
+  <p>Answered in two phases, below — first with the human demonstrations PIRLNav uses,
+  then with shortest-path (SP) demonstrations that sharpen the test.</p>
 </div></section>
 
-<section><div class="wrap">
-  <h2>Method</h2>
-  <h3>The costmap sensor</h3>
-  <p>An online sensor computes the ground-truth geodesic distance from every
-  navigable grid point to the nearest goal (multi-goal shortest path over the
-  navmesh), then back-projects the agent’s depth image onto that field to produce a
-  2-channel egocentric costmap:</p>
+<section id="method"><div class="wrap">
+  <h2>Method — the costmap sensor</h2>
+  <p>An online sensor computes the ground-truth geodesic distance from every navigable
+  grid point to the nearest goal (one multi-goal shortest-path query per grid point over
+  the navmesh, KD-tree lookup, cached per scene+category — validated against offline GT
+  to MAE 0.06–0.10 m). Each step it back-projects the agent’s depth image onto that
+  field to produce an egocentric costmap the policy sees instead of / alongside RGB.</p>
+  <h3>The 2-channel fix (a key Phase-1 result)</h3>
+  <p>A naïve <strong>1-channel</strong> costmap (globally scaled by /30) left the
+  within-frame gradient spanning only ~4% of the input range — the from-scratch encoder
+  <em>ignored it</em> and the policy collapsed to the action-prior floor. The fix, a
+  <strong>2-channel transform</strong>:</p>
   <ul>
-    <li><strong>Channel 0 — absolute cost</strong> (<code>cost / max_cost</code>):
-    carries “how far is the goal” → the STOP cue.</li>
-    <li><strong>Channel 1 — per-frame contrast-stretched cost</strong>: carries
-    “which direction is downhill” → the steering cue.</li>
+    <li><strong>Ch 0 — absolute cost</strong> (<code>cost/max</code>): “how far is the goal” → the STOP cue.</li>
+    <li><strong>Ch 1 — per-frame contrast-stretched cost</strong>: “which way is downhill” → the steering cue.</li>
   </ul>
-  <h3>Offline precomputed fields (engineering)</h3>
-  <p>Building geodesic fields online hung training on pathological HM3D navmeshes
-  (a single <code>find_path</code> could spin for hours). The fix: precompute all
-  fields offline in hard-<code>terminate()</code>-able subprocesses (Euclidean
-  fallback for the rare degenerate scene), then <em>load</em> them from disk at
-  train and eval time — so training can never hang on a field build.</p>
+  <p>This made the input learnable at train time (a 1-scene overfit reaches loss 0.0 /
+  100% accuracy — the pipeline is certified correct).</p>
 </div></section>
 
-<section id="results"><div class="wrap">
-  <h2>Results — held-out generalization</h2>
-  <p>Full <strong>1000-episode HM3D-v2 val</strong> split, deterministic actions.
-  Best checkpoint per arm shown; both RGB arms and the costmap arm trained at the
-  identical 8M-frame BC budget.</p>
+<section id="phase1"><div class="wrap">
+  <p class="phase">Phase 1 · Human demonstrations</p>
+  <h2>Reproducing PIRLNav — and hitting a ceiling</h2>
+  <p>Both arms were trained by BC on human demos at a matched <strong>8M-frame</strong>
+  budget (effective batch 16,320 ≈ the paper’s, via gradient accumulation on a single
+  16 GB GPU). Training fit was healthy and near-identical across arms (action accuracy
+  ~0.74). But <strong>on the full 1000-episode HM3D-v2 val split, both scored 0.0%
+  success</strong>:</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Arm (human demos, 8M frames)</th><th>Train acc</th><th>Success</th><th>SPL</th><th>softSPL</th></tr></thead>
+    <tbody>
+      <tr><td>RGB BC <span class="cap">(runs 5evr8nyg / wrj46kdj)</span></td><td>0.744</td><td class="zero">0.0%</td><td class="zero">0.0%</td><td>0.129</td></tr>
+      <tr><td>Costmap BC, 2-channel <span class="cap">(wmxjgj7b / cm2cheval1)</span></td><td>0.744</td><td class="zero">0.0%</td><td class="zero">0.0%</td><td>0.108</td></tr>
+      <tr><td><em>PIRLNav paper (77k demos, full budget)</em></td><td>—</td><td>64.1%</td><td>27.1%</td><td>—</td></tr>
+    </tbody>
+  </table></div>
+  <p>So an oracle costmap did <em>not</em> collapse the difficulty here — both inputs
+  failed identically on unseen scenes. The leading interpretation: with human demos, the
+  bottleneck is the <strong>teacher and the budget</strong>, not the input. (Human demos
+  wander; BC’s objective punishes navigating <em>better</em> than the teacher, so a
+  privileged input has little room to express itself — and at ~0.8 epoch of training,
+  neither input has learned to generalize.) The lab server (“Phoenix”) was lost at the
+  end of the internship; everything below was rebuilt from scratch on rented GPUs.</p>
+</div></section>
 
+<section id="phase2"><div class="wrap">
+  <p class="phase">Phase 2 · Shortest-path demonstrations</p>
+  <h2>A sharper test — and the costmap wins</h2>
+  <p>Shortest-path (SP) demos are generated by an oracle that beelines to the goal using
+  privileged geodesic information. PIRLNav shows they’re a <em>terrible</em> teacher for
+  RGB (6.4% vs 64.1%) — the policy can’t see the privileged signal the teacher follows.
+  But <strong>the costmap <em>is</em> that signal</strong>. So the prediction is an
+  <strong>interaction effect</strong>: SP demos should stay bad for RGB but become more
+  learnable through the costmap. Both arms were retrained on SP demos at the same
+  8M-frame budget and evaluated on the same held-out val split.</p>
   <div class="charts">
-    <div class="chart">
-      <h4>Success rate</h4><p class="unit">% episodes solved · higher is better</p>
+    <div class="chart"><h4>Success rate</h4><p class="unit">% solved · higher better</p>
       <div class="bars">
         <div class="bar"><span class="val">3.2</span><div class="fill" style="height:100%;background:var(--cm)"></div><span class="lbl">Costmap<br>+SP</span></div>
         <div class="bar"><span class="val">2.1</span><div class="fill" style="height:66%;background:var(--rgbm)"></div><span class="lbl">RGB+SP<br>matched</span></div>
         <div class="bar"><span class="val">1.8</span><div class="fill" style="height:56%;background:var(--rgb1)"></div><span class="lbl">RGB+SP<br>lr 1e-3</span></div>
-      </div>
-    </div>
-    <div class="chart">
-      <h4>SPL</h4><p class="unit">success weighted by path length</p>
+      </div></div>
+    <div class="chart"><h4>SPL</h4><p class="unit">success × path efficiency</p>
       <div class="bars">
         <div class="bar"><span class="val">2.0</span><div class="fill" style="height:100%;background:var(--cm)"></div><span class="lbl">Costmap<br>+SP</span></div>
         <div class="bar"><span class="val">1.1</span><div class="fill" style="height:55%;background:var(--rgbm)"></div><span class="lbl">RGB+SP<br>matched</span></div>
         <div class="bar"><span class="val">0.86</span><div class="fill" style="height:43%;background:var(--rgb1)"></div><span class="lbl">RGB+SP<br>lr 1e-3</span></div>
-      </div>
-    </div>
-    <div class="chart">
-      <h4>softSPL</h4><p class="unit">goal-directed progress</p>
+      </div></div>
+    <div class="chart"><h4>softSPL</h4><p class="unit">goal-directed progress</p>
       <div class="bars">
         <div class="bar"><span class="val">.225</span><div class="fill" style="height:100%;background:var(--cm)"></div><span class="lbl">Costmap<br>+SP</span></div>
         <div class="bar"><span class="val">.166</span><div class="fill" style="height:74%;background:var(--rgbm)"></div><span class="lbl">RGB+SP<br>matched</span></div>
         <div class="bar"><span class="val">.176</span><div class="fill" style="height:78%;background:var(--rgb1)"></div><span class="lbl">RGB+SP<br>lr 1e-3</span></div>
-      </div>
-    </div>
+      </div></div>
   </div>
   <div class="legend">
     <span><i class="dot" style="background:var(--cm)"></i>Costmap+SP</span>
     <span><i class="dot" style="background:var(--rgbm)"></i>RGB+SP (matched lr 5e-4)</span>
     <span><i class="dot" style="background:var(--rgb1)"></i>RGB+SP (lr 1e-3)</span>
   </div>
-  <p class="cap">Costmap+SP wins on all three metrics: Success ×1.5, SPL ×1.8,
-  softSPL ×1.35 over the matched RGB baseline.</p>
-
-  <h3>Best checkpoint (final, update 25k)</h3>
-  <div class="tablewrap"><table>
-    <thead><tr><th>Arm</th><th>Success</th><th>SPL</th><th>softSPL</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Costmap+SP</strong></td><td class="win">3.2%</td><td class="win">2.01%</td><td class="win">0.225</td></tr>
-      <tr><td>RGB+SP (matched, lr 5e-4)</td><td>2.1%</td><td>1.10%</td><td>0.166</td></tr>
-      <tr><td>RGB+SP (lr 1e-3)</td><td>1.8%</td><td>0.86%</td><td>0.176</td></tr>
-    </tbody>
-  </table></div>
-
-  <h3>Checkpoint sweep (Success rate by training update)</h3>
-  <div class="tablewrap"><table>
-    <thead><tr><th>Checkpoint</th><th>Costmap+SP</th><th>RGB+SP (1e-3)</th><th>RGB+SP (matched)</th></tr></thead>
-    <tbody>
-      <tr><td>ckpt.9 · 25k</td><td class="win">3.2%</td><td>1.8%</td><td>2.1%</td></tr>
-      <tr><td>ckpt.7 · 20k</td><td>2.8%</td><td>1.2%</td><td>1.8%</td></tr>
-      <tr><td>ckpt.5 · 15k</td><td>0.6%</td><td>0.7%</td><td>1.7%</td></tr>
-    </tbody>
-  </table></div>
-  <p class="cap">The costmap arm is <strong>monotonic in training</strong>
-  (9 &gt; 7 &gt; 5) — no overfitting collapse — which suggests it would keep climbing
-  with a larger budget. RGB peaks early and wobbles.</p>
+  <p class="cap">Costmap+SP wins on all three: Success ×1.5, SPL ×1.8, softSPL ×1.35 over
+  the matched RGB baseline. Its final checkpoint is its best (monotonic 25k &gt; 20k &gt;
+  15k) — no overfitting collapse, hinting it would climb with more training.</p>
 </div></section>
 
-<section><div class="wrap">
-  <h2>Why the absolute numbers are low</h2>
-  <p>Two entangled causes cap <em>every</em> arm — this is the project’s honest core
-  finding, and it is <strong>not</strong> a costmap problem:</p>
-  <div class="grid2">
-    <div>
-      <h3>1 · Undertraining (budget)</h3>
-      <p>We trained ~0.8 of one epoch. The paper trains BC for ~500M steps on 64
-      GPUs. The LR schedule decays to ~0 by 8M steps, so learning is forced to stop
-      after less than one pass over the data.</p>
-    </div>
-    <div>
-      <h3>2 · Representation ceiling</h3>
-      <p>FOV / 5 m depth window / low resolution. The costmap is back-projected
-      through the <em>same</em> limited depth camera, so it inherits the same
-      ceiling — it can only reveal cost within the visible window.</p>
-    </div>
-  </div>
-  <p>Evidence this is a real ceiling: in the earlier internship reproduction, even
-  RGB + <em>human</em> demos scored ~0% on val (vs the paper’s 64.1%). Demo type
-  isn’t the bottleneck; budget and perception are.</p>
+<section id="results"><div class="wrap">
+  <h2>Results — the whole internship in one table</h2>
+  <p>Full 1000-episode HM3D-v2 val, deterministic actions, matched 8M-frame budget
+  throughout (~0.8 epoch). Best checkpoint per arm.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Phase · Teacher</th><th>Input</th><th>Success</th><th>SPL</th><th>softSPL</th></tr></thead>
+    <tbody>
+      <tr><td>1 · Human</td><td>RGB</td><td class="zero">0.0%</td><td class="zero">0.0%</td><td>0.129</td></tr>
+      <tr><td>1 · Human</td><td>Costmap (2-ch)</td><td class="zero">0.0%</td><td class="zero">0.0%</td><td>0.108</td></tr>
+      <tr><td>2 · Shortest-path</td><td>RGB (lr 1e-3)</td><td>1.8%</td><td>0.86%</td><td>0.176</td></tr>
+      <tr><td>2 · Shortest-path</td><td>RGB (matched lr 5e-4)</td><td>2.1%</td><td>1.10%</td><td>0.166</td></tr>
+      <tr><td><strong>2 · Shortest-path</strong></td><td><strong>Costmap (2-ch)</strong></td><td class="win">3.2%</td><td class="win">2.01%</td><td class="win">0.225</td></tr>
+      <tr><td colspan="5" style="color:var(--muted);font-size:13px">Reference — PIRLNav paper: human demos 64.1% / 27.1%; shortest-path demos 6.4% / 5.0%.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="cap">Reading it: Phase 1 shows the ceiling (both inputs → 0% on human demos);
+  Phase 2 isolates the costmap’s contribution under a cleaner teacher — a clean, consistent
+  win over RGB on every metric.</p>
+</div></section>
 
+<section id="ceiling"><div class="wrap">
+  <h2>Why absolute performance is capped</h2>
+  <p>The costmap-vs-RGB result is clear, but every arm sits far below the paper’s 64%.
+  Three entangled causes — none of which the costmap can fix on its own:</p>
+  <div class="grid2">
+    <div><h3>1 · Undertraining (budget)</h3>
+      <p>We trained ~0.8 of one epoch; the paper trains BC for ~500M steps on 64 GPUs
+      (~33 epochs). The LR schedule decays to ~0 by 8M steps, forcing learning to stop
+      before even one full pass over the data.</p></div>
+    <div><h3>2 · The teacher (Phase 1)</h3>
+      <p>Human demos wander (perfect imitation ≈ SPL 0.47); BC punishes beating the
+      teacher, so a privileged input has little room to help. SP demos remove this — and
+      the costmap advantage appears.</p></div>
+  </div>
+  <h3>3 · Representation limits</h3>
+  <p>FOV / a 5 m depth window / low resolution. The costmap is back-projected through the
+  <em>same</em> limited depth camera, so it inherits the same ceiling — it can only reveal
+  cost within the visible window, and can’t show a goal beyond the horizon.</p>
   <h3>Training budget vs the PIRLNav paper</h3>
   <div class="tablewrap"><table>
-    <thead><tr><th></th><th>PIRLNav (BC)</th><th>This run</th></tr></thead>
+    <thead><tr><th></th><th>PIRLNav (BC)</th><th>This work</th></tr></thead>
     <tbody>
       <tr><td>Steps / frames</td><td>~500M</td><td>8M</td></tr>
       <tr><td>GPUs</td><td>64</td><td>1</td></tr>
-      <tr><td>Demos</td><td>77k (human)</td><td>~64k (SP)</td></tr>
+      <tr><td>Demos</td><td>77k human</td><td>~64k SP / human</td></tr>
       <tr><td>Epochs over demos</td><td>~33</td><td>~0.8</td></tr>
     </tbody>
   </table></div>
-  <p class="cap">Same LR (1e-3, linearly decayed). The costmap-vs-RGB result holds
-  regardless of this ceiling — both arms share the identical budget.</p>
+  <p class="cap">Same LR (1e-3, linearly decayed). Both arms share the identical budget,
+  so the costmap-vs-RGB comparison holds regardless of this ceiling.</p>
 </div></section>
 
-<section><div class="wrap">
+<section id="eng"><div class="wrap">
   <h2>Engineering notes</h2>
-  <p>Training the costmap arm to completion on rented GPUs surfaced four distinct
-  failure modes, each fixed:</p>
+  <p>Rebuilding the whole stack on rented GPUs (the lab server was lost) and training the
+  costmap arm to completion surfaced several failure modes, each fixed:</p>
   <ul>
-    <li><strong>NaN divergence</strong> (from-scratch encoder + sharp SP targets) →
-    lr 5e-4 + grad-clip 0.1 + a non-finite-gradient guard.</li>
-    <li><strong>Field-build hangs</strong> on pathological navmeshes →
-    offline precompute with hard-<code>terminate()</code> timeouts + disk loading.</li>
-    <li><strong>CUDA “unspecified launch failure” crashes</strong> (intermittent) →
-    a <strong>self-healing wrapper</strong> that auto-resumes from the last
-    checkpoint on any crash and kills+resumes on any hang, marching to 25k updates
-    across restarts (final run: 4 attempts, 3 crashes, all recovered automatically).</li>
-    <li><strong>Sim/CUDA contention</strong> → render on a separate GPU from
-    training.</li>
+    <li><strong>1-ch costmap ignored</strong> → the 2-channel contrast-stretch transform.</li>
+    <li><strong>NaN divergence</strong> (from-scratch encoder + sharp SP targets) → lr 5e-4 + grad-clip 0.1 + a non-finite-gradient guard.</li>
+    <li><strong>Field-build hangs</strong> on pathological navmeshes → offline precompute in hard-<code>terminate()</code>-able subprocesses (Euclidean fallback), loaded from disk.</li>
+    <li><strong>Intermittent CUDA crashes</strong> → a self-healing wrapper that auto-resumes from the last checkpoint on any crash and kills+resumes on any hang (final run: 4 attempts, 3 crashes, all recovered automatically to 25k updates).</li>
   </ul>
 </div></section>
 
-<section><div class="wrap">
+<section id="future"><div class="wrap">
   <h2>Limitations &amp; future work</h2>
   <ul>
-    <li><strong>Lift the ceiling, then re-run the same comparison</strong> — wider
-    FOV, deeper depth window, higher-resolution costmap, perhaps a spatial map. This
-    is what would let the costmap’s advantage actually <em>show</em> in absolute
-    terms.</li>
-    <li><strong>Full-budget training</strong> (multiple epochs, stretched LR
-    schedule) to test how much of the low absolute success is undertraining.</li>
-    <li><strong>SP demos never teach exploration</strong>; a policy that can only
-    follow a visible cost gradient is stuck when the goal is out of perceptual
-    range.</li>
+    <li><strong>Lift the ceiling, then re-run the comparison</strong> — wider FOV, deeper
+    depth window, higher-resolution costmap, perhaps a spatial map — so the costmap’s
+    advantage can show in absolute terms.</li>
+    <li><strong>Full-budget training</strong> (multiple epochs, stretched LR schedule) to
+    quantify how much of the low absolute success is undertraining.</li>
+    <li><strong>Costmap encoder trains from scratch</strong> (RGB rides a pretrained
+    encoder) — an asymmetry that <em>disfavors</em> the costmap, so its win is if anything
+    understated.</li>
+    <li><strong>SP demos never teach exploration</strong> — a policy that can only follow a
+    visible cost gradient is stuck when the goal is out of perceptual range.</li>
   </ul>
 </div></section>
 
-<section><div class="wrap">
+<section id="repro"><div class="wrap">
   <h2>Reproducibility</h2>
-  <p>All code, scripts, eval logs and results are in the repo under
-  <code>exp2_sp_costmap/</code>; every metric is also logged to Weights &amp; Biases
-  (project <code>pirlnav-baseline</code>). Key pieces:</p>
-  <ul>
-    <li><code>precompute_fields.py</code> — offline geodesic-field builder (train + val).</li>
-    <li><code>run_cm_resilient.sh</code> — self-healing training wrapper.</li>
-    <li><code>run_eval_*.sh</code> — full-val eval (deterministic, ObjectNav-v2).</li>
-    <li><code>exp2_sp_costmap/RESULTS.md</code> — the numbers in full.</li>
-  </ul>
+  <p>All code, scripts, eval logs and results are in the
+  <a href="https://github.com/KhushiJ2911/pirlnav-costmap">repo</a> (see
+  <code>exp2_sp_costmap/</code>); every metric is logged to
+  <a href="https://wandb.ai/jaiswalkhushi2911-coep-technological-university-/pirlnav-baseline">W&amp;B</a>
+  (project <code>pirlnav-baseline</code>). Key W&amp;B runs: Phase 1 —
+  <code>wrj46kdj</code> (RGB eval), <code>cm2cheval1</code> (costmap eval); Phase 2 —
+  <code>il_costmap_2ch_sp_eval_*</code>, <code>il_rgb_sp_eval_*</code>. Key pieces:
+  <code>precompute_fields.py</code> (offline geodesic fields),
+  <code>run_cm_resilient.sh</code> (self-healing training),
+  <code>exp2_sp_costmap/RESULTS.md</code> (all numbers).</p>
 </div></section>
 
 <footer><div class="wrap">
   Costmap-conditioned PIRLNav · internship project report · Khushi Jaiswal, COEP
-  Technological University. Built on PIRLNav (Ramrakhya et al., 2023) and the
+  Technological University. Built on PIRLNav (Ramrakhya et al., CVPR 2023) and the
   WayPixel costmap from MASt3R-Nav.
 </div></footer>
 </body>
