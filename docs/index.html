@@ -140,6 +140,15 @@
     MAE 0.06–0.10 m). Each step it back-projects the agent’s depth image onto that field to
     produce an egocentric costmap the policy sees instead of RGB.</p>
     <figure style="margin:1.4rem 0">
+      <img src="figs/geodesic_field.png" alt="Top-down geodesic cost-to-goal field" style="width:100%;max-width:660px;display:block;margin:0 auto">
+      <figcaption class="has-text-centered">The quantity the costmap encodes: geodesic
+      distance from every point to the goal (dark = near). Walls bend the contours — the
+      isolated left room is geodesically <em>far</em> despite being spatially close, because
+      the path must route through doorways. The agent descends this field (red path).
+      <span style="color:var(--muted)">(Schematic on a synthetic floorplan; the real sensor
+      computes the same field over the HM3D navmesh.)</span></figcaption>
+    </figure>
+    <figure style="margin:1.4rem 0">
       <img src="figs/pipeline.png" alt="Costmap-conditioned PIRLNav architecture" style="width:100%;display:block">
       <figcaption class="has-text-centered">The pipeline. The two arms are identical except
       for the input: the costmap arm feeds the policy a 2-channel egocentric costmap derived
