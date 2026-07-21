@@ -43,3 +43,23 @@ Numbers exported from Weights & Biases before pruning noise runs (run IDs kept f
 | ckpt.5 | 0.6% | 0.34% | 0.191 | `5bw5j6eh` |
 | ckpt.7 | 2.8% | 1.68% | 0.225 | `bykjnjr4` |
 | ckpt.9 (report) | 3.2% | 2.01% | 0.225 | `whz9w07i` |
+
+## De-risk / overfit sanity check (SP demos) — IN-DISTRIBUTION, not generalization
+
+Run before the full SP training to confirm the costmap arm could learn shortest-path demos
+at all. The policy is overfit on a tiny scene set and evaluated on the **same scenes it trained
+on** (`overfit_tiny/val` is a byte copy of `overfit_tiny/train`; `run_eval_overfit.sh` evals
+"the SAME scene/episodes it memorized"). Two variants, A and B. **This is a sanity check, not a
+generalization result** — the real held-out costmap number is 3.2% (above).
+
+| Variant | Input | Success | SPL | softSPL | W&B run |
+|---|---|---|---|---|---|
+| A | RGB | 6.06% | 4.89% | 0.252 | `rgb_sp_A_eval` |
+| A | Costmap | 75.0% | 70.97% | 0.827 | `cm_sp_A_eval` |
+| B | RGB | 0.0% | 0.00% | 0.382 | `rgb_sp_B_eval` |
+| B | Costmap | 100% | 93.88% | 0.928 | `cm_sp_B_eval` |
+
+Note: the matching overfit *training* runs (`rgb_sp_overfit`, `cm_sp_overfit`) both show ~100%
+"train success", but that metric is teacher-forced and not meaningful; the free-rollout eval
+above is the real signal. These W&B runs were deleted in the 2026-07-21 cleanup; numbers
+recovered from the pre-deletion run dump.
