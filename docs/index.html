@@ -177,15 +177,21 @@
     </figure>
     <h3 class="has-text-centered" style="margin-top:1.7rem">The costmap in action</h3>
     <figure style="margin:0.7rem 0">
-      <img src="figs/rollout.gif" alt="Agent navigating with its live cost-to-goal costmap" style="width:100%;max-width:780px;display:block;margin:0 auto;border:1px solid var(--line);border-radius:8px">
-      <img src="figs/rollout_topdown.png" alt="Top-down trajectory descending the cost-to-goal field" style="width:100%;max-width:520px;display:block;margin:1rem auto 0;border:1px solid var(--line);border-radius:8px">
+      <img src="figs/rollout_bed.gif" alt="Agent navigating with its live cost-to-goal costmap" style="width:100%;max-width:780px;display:block;margin:0 auto;border:1px solid var(--line);border-radius:8px">
+      <img src="figs/rollout_topdown.png" alt="Top-down trajectory descending the cost-to-goal field" style="width:100%;max-width:560px;display:block;margin:1rem auto 0;border:1px solid var(--line);border-radius:8px">
       <figcaption class="has-text-centered">A rollout on a real held-out HM3D scene (find the
       <em>bed</em>). <strong>Top</strong> — the agent's first-person view (left) beside the live
       cost-to-goal costmap over that view (right): dark = low geodesic distance to the goal, and
       the dark region draws closer as the agent advances. <strong>Bottom</strong> — the top-down
-      path, descending the cost field from high (yellow) to zero at the goal (purple).
-      Navigating <em>is</em> just descending the costmap.</figcaption>
+      path, descending the cost field from far (yellow) into the goal (dark). Navigating
+      <em>is</em> just descending the costmap.</figcaption>
     </figure>
+    <p class="has-text-centered" style="color:var(--ink2);margin-top:1.3rem;margin-bottom:.3rem">More rollouts across other held-out houses:</p>
+    <div class="columns">
+      <div class="column"><img src="figs/rollout_tv.gif" alt="find the tv_monitor" style="width:100%;border:1px solid var(--line);border-radius:8px"><p class="figstep has-text-centered">find the tv</p></div>
+      <div class="column"><img src="figs/rollout_sofa.gif" alt="find the sofa" style="width:100%;border:1px solid var(--line);border-radius:8px"><p class="figstep has-text-centered">find the sofa</p></div>
+      <div class="column"><img src="figs/rollout_chair.gif" alt="find the chair" style="width:100%;border:1px solid var(--line);border-radius:8px"><p class="figstep has-text-centered">find the chair</p></div>
+    </div>
   </div>
 </section>
 
