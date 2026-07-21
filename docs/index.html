@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -18,13 +19,16 @@
   html{background:#fff}
   body{font-family:'Noto Sans',system-ui,-apple-system,sans-serif;color:var(--ink);line-height:1.65}
   .container.is-max-desktop{max-width:900px}
-  .publication-title{font-weight:700;letter-spacing:-.01em}
+  h1,h2,h3,h4,.title,.publication-title,.authors,.kicker{font-family:'Google Sans','Noto Sans',sans-serif}
+  .publication-title{font-weight:700;letter-spacing:-.015em;line-height:1.08}
   .hero-body{padding:3.2rem 1.5rem 2rem}
   .kicker{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:.6rem}
   .subtitle-tag{color:var(--ink2);font-size:1.15rem;max-width:720px;margin:0 auto 1.1rem}
-  .authors{font-size:1.15rem;margin:.4rem 0 .1rem}
-  .authors a{color:var(--accent)}
-  .affil{color:var(--ink2);font-size:1rem;margin-bottom:1.3rem}
+  .authors{font-size:1.28rem;margin:.7rem 0 .15rem}
+  .authors a{color:hsl(204,86%,53%)}
+  .authors a:hover{text-decoration:underline}
+  .venue{color:#555;font-weight:700;font-size:1.05rem;margin:.15rem 0 .1rem}
+  .affil{color:var(--ink2);font-size:1rem;margin-bottom:1.4rem}
   .buttons.is-centered .button{margin:.28rem}
   .button.is-dark{background:#1f2733;border-radius:999px;font-weight:600}
   .button.is-dark:hover{background:#0f1620}
@@ -74,11 +78,11 @@
     <div class="container is-max-desktop has-text-centered">
       <p class="kicker">ObjectGoal Navigation · Imitation Learning</p>
       <h1 class="title is-1 publication-title">Costmap-Conditioned PIRLNav</h1>
+      <p class="authors"><a href="https://github.com/KhushiJ2911">Khushi Jaiswal</a></p>
+      <p class="venue">COEP Technological University · Internship Project</p>
       <p class="subtitle-tag">Does conditioning ObjectNav behavior cloning on a
         ground-truth geodesic costmap instead of RGB change what a policy can learn —
         across human and shortest-path demonstrations?</p>
-      <p class="authors"><a href="https://github.com/KhushiJ2911">Khushi Jaiswal</a></p>
-      <p class="affil">COEP Technological University · Internship Project</p>
       <div class="buttons is-centered">
         <a class="button is-dark" href="https://github.com/KhushiJ2911/pirlnav-costmap">
           <span class="icon"><i class="fab fa-github"></i></span><span>Code</span></a>
