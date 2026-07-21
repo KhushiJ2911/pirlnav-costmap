@@ -97,22 +97,22 @@
   </div>
 </section>
 
-<section class="section" style="padding-top:.5rem">
+<section class="section" style="padding-top:1rem;padding-bottom:.6rem">
   <div class="container is-max-desktop">
-    <div class="highlight">
+    <figure class="plot" style="margin-top:0;max-width:780px">
+      <img src="figs/rollout_tv.gif" alt="Costmap-conditioned agent navigating an unseen HM3D home" style="border:1px solid var(--line);border-radius:12px">
+      <figcaption>The costmap-conditioned policy on an unseen HM3D home — the agent’s first-person
+      view (left) and the live cost-to-goal it steers by (right; dark = toward the goal).</figcaption>
+    </figure>
+    <div class="highlight" style="margin-top:2.1rem">
       <p class="lead" style="margin-bottom:.4rem"><strong>Result.</strong> With
       shortest-path demos at a matched 8M-frame budget, the costmap-conditioned policy
       generalizes <strong>better than RGB on every metric</strong> — Success
       <strong>3.2% vs 2.1%</strong>, SPL <strong>2.0% vs 1.1%</strong>, softSPL
       <strong>0.225 vs 0.166</strong> — on the held-out 1000-episode HM3D-v2 val split.</p>
       <p style="color:var(--ink2);margin:0">With human demos, both inputs hit a shared
-      ceiling (0% success) — a budget/perception limit the costmap can't lift on its own.</p>
+      ceiling (0% success) — a budget/perception limit the costmap can’t lift on its own.</p>
     </div>
-    <figure class="plot" style="max-width:740px">
-      <img src="figs/success_all.png" alt="Success rate across all arms, both phases">
-      <figcaption>Held-out val success across every arm of the internship. Human demos cap both
-      inputs at zero; under shortest-path demos the costmap pulls clear of RGB.</figcaption>
-    </figure>
   </div>
 </section>
 
@@ -148,6 +148,14 @@
     the navmesh; KD-tree lookup; cached per scene+category; validated against offline GT to
     MAE 0.06–0.10 m). Each step it back-projects the agent’s depth image onto that field to
     produce an egocentric costmap the policy sees instead of RGB.</p>
+    <figure class="plot" style="max-width:960px">
+      <img src="figs/method.png" alt="Costmap-conditioned PIRLNav — method overview">
+      <figcaption>The full pipeline. <strong>Top:</strong> an online sensor turns the scene and
+      goal into a ground-truth geodesic cost-to-goal field over the navmesh, then back-projects
+      the agent’s depth onto it to form a 2-channel egocentric costmap. <strong>Bottom:</strong>
+      the policy is identical for both arms — only the input is swapped (costmap for ours, RGB for
+      the baseline) before the shared CNN encoder + GRU predicts the action.</figcaption>
+    </figure>
     <figure class="plot" style="max-width:660px">
       <img src="figs/geodesic_field.png" alt="Top-down geodesic cost-to-goal field">
       <figcaption>The quantity the costmap encodes: geodesic
@@ -156,13 +164,6 @@
       the path must route through doorways. The agent descends this field (red path).
       <span style="color:var(--muted)">(Schematic on a synthetic floorplan; the real sensor
       computes the same field over the HM3D navmesh.)</span></figcaption>
-    </figure>
-    <figure class="plot" style="max-width:820px">
-      <img src="figs/pipeline.png" alt="Costmap-conditioned PIRLNav architecture">
-      <figcaption>The pipeline. The two arms are identical except
-      for the input: the costmap arm feeds the policy a 2-channel egocentric costmap derived
-      from the ground-truth geodesic field; the RGB baseline feeds a first-person image
-      through a pretrained encoder. Everything downstream (CNN + GRU policy) is shared.</figcaption>
     </figure>
     <p><strong>The 2-channel fix (a key Phase-1 result).</strong> A naïve 1-channel costmap
     (globally scaled) left the within-frame gradient spanning only ~4% of the input range —
@@ -248,6 +249,11 @@
     <h2 class="title is-3 has-text-centered">Results — the whole internship</h2>
     <p class="has-text-centered" style="color:var(--ink2)">Full 1000-episode HM3D-v2 val,
     deterministic actions, matched 8M-frame budget (~0.8 epoch). Best checkpoint per arm.</p>
+    <figure class="plot" style="max-width:740px;margin-top:.8rem">
+      <img src="figs/success_all.png" alt="Success rate across all arms, both phases">
+      <figcaption>Held-out val success across every arm. Human demos cap both inputs at zero;
+      under shortest-path demos the costmap pulls clear of RGB.</figcaption>
+    </figure>
     <table class="tbl">
       <thead><tr><th>Phase · Teacher</th><th>Input</th><th>Success</th><th>SPL</th><th>softSPL</th></tr></thead>
       <tbody>
