@@ -56,9 +56,11 @@
   .legend{display:flex;flex-wrap:wrap;justify-content:center;gap:1.1rem;margin-top:1rem;font-size:.85rem;color:var(--ink2)}
   .legend span{display:inline-flex;align-items:center;gap:7px}
   .dot{width:11px;height:11px;border-radius:3px;display:inline-block}
-  .figrow img{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:8px;background:#fafafa}
-  .figstep{font-size:.72rem;color:var(--muted);text-align:center;margin-top:.35rem}
-  figcaption{color:var(--ink2);font-size:.9rem;margin-top:.9rem;line-height:1.55}
+  .plot{margin:1.6rem auto 0;text-align:center}
+  .plot img{width:100%;height:auto;display:block;margin:0 auto}
+  .frame img{border:1px solid var(--line);border-radius:10px;background:#fff}
+  figcaption{color:var(--ink2);font-size:.9rem;margin-top:.9rem;line-height:1.55;
+    max-width:680px;margin-left:auto;margin-right:auto;text-align:center}
   pre.bib{background:#f6f6f4;border:1px solid var(--line);border-radius:10px;padding:1rem 1.2rem;overflow-x:auto;font-size:.82rem;line-height:1.5}
   .footer{background:#fafafa;color:var(--muted);font-size:.9rem}
   .footer a{color:var(--accent)}
@@ -101,8 +103,10 @@
       <p style="color:var(--ink2);margin:0">With human demos, both inputs hit a shared
       ceiling (0% success) — a budget/perception limit the costmap can't lift on its own.</p>
     </div>
-    <figure style="margin:1.8rem 0 0">
-      <img src="figs/success_all.png" alt="Success rate across all arms, both phases" style="width:100%;max-width:720px;display:block;margin:0 auto">
+    <figure class="plot" style="max-width:740px">
+      <img src="figs/success_all.png" alt="Success rate across all arms, both phases">
+      <figcaption>Held-out val success across every arm of the internship. Human demos cap both
+      inputs at zero; under shortest-path demos the costmap pulls clear of RGB.</figcaption>
     </figure>
   </div>
 </section>
@@ -139,18 +143,18 @@
     the navmesh; KD-tree lookup; cached per scene+category; validated against offline GT to
     MAE 0.06–0.10 m). Each step it back-projects the agent’s depth image onto that field to
     produce an egocentric costmap the policy sees instead of RGB.</p>
-    <figure style="margin:1.4rem 0">
-      <img src="figs/geodesic_field.png" alt="Top-down geodesic cost-to-goal field" style="width:100%;max-width:660px;display:block;margin:0 auto">
-      <figcaption class="has-text-centered">The quantity the costmap encodes: geodesic
+    <figure class="plot" style="max-width:660px">
+      <img src="figs/geodesic_field.png" alt="Top-down geodesic cost-to-goal field">
+      <figcaption>The quantity the costmap encodes: geodesic
       distance from every point to the goal (dark = near). Walls bend the contours — the
       isolated left room is geodesically <em>far</em> despite being spatially close, because
       the path must route through doorways. The agent descends this field (red path).
       <span style="color:var(--muted)">(Schematic on a synthetic floorplan; the real sensor
       computes the same field over the HM3D navmesh.)</span></figcaption>
     </figure>
-    <figure style="margin:1.4rem 0">
-      <img src="figs/pipeline.png" alt="Costmap-conditioned PIRLNav architecture" style="width:100%;display:block">
-      <figcaption class="has-text-centered">The pipeline. The two arms are identical except
+    <figure class="plot" style="max-width:820px">
+      <img src="figs/pipeline.png" alt="Costmap-conditioned PIRLNav architecture">
+      <figcaption>The pipeline. The two arms are identical except
       for the input: the costmap arm feeds the policy a 2-channel egocentric costmap derived
       from the ground-truth geodesic field; the RGB baseline feeds a first-person image
       through a pretrained encoder. Everything downstream (CNN + GRU policy) is shared.</figcaption>
@@ -161,19 +165,16 @@
     The fix is a 2-channel transform: <strong>channel 0</strong> = absolute cost (“how far
     is the goal” → the STOP cue), <strong>channel 1</strong> = per-frame contrast-stretched
     cost (“which way is downhill” → the steering cue).</p>
-    <figure>
-      <div class="columns is-mobile" style="margin-bottom:0">
-        <div class="column"><img src="figs/cm_step0.png" alt="2-channel costmap at rollout step 0" style="width:100%;border:1px solid var(--line);border-radius:8px"><div class="figstep">rollout step 0</div></div>
-        <div class="column"><img src="figs/cm_step3.png" alt="2-channel costmap at rollout step 3" style="width:100%;border:1px solid var(--line);border-radius:8px"><div class="figstep">step 3</div></div>
-        <div class="column"><img src="figs/cm_step6.png" alt="2-channel costmap at rollout step 6" style="width:100%;border:1px solid var(--line);border-radius:8px"><div class="figstep">step 6</div></div>
-      </div>
-      <figcaption class="has-text-centered">The actual 2-channel costmap the policy sees, at
-      three steps of one rollout. In each frame the <strong>left half is channel 0</strong>
-      (absolute geodesic cost — deep blue is low cost near the goal; red spikes are
-      out-of-depth pixels clamped to max cost, itself the STOP cue) and the
-      <strong>right half is channel 1</strong> (the same field contrast-stretched per frame,
-      exposing the “downhill” gradient the agent steers along). This is the WayPixel-style
-      signal the shortest-path teacher follows.</figcaption>
+    <figure class="plot" style="max-width:820px">
+      <img src="figs/two_channel.png" alt="The two costmap channels: absolute vs contrast-stretched">
+      <figcaption>Why two channels. The same visible cost patch (~5.5–7 m to the goal),
+      shown under each channel. <strong>Channel 0</strong> divides by the global maximum, so a
+      real within-frame gradient collapses into ~4% of the range — almost a flat colour, which
+      the from-scratch encoder can’t read (but its absolute level still encodes “how far” → the
+      STOP cue). <strong>Channel 1</strong> stretches that same patch to full contrast, exposing
+      the downhill direction the agent steers along. Together they give the policy both
+      <em>how&nbsp;far</em> and <em>which&nbsp;way</em> — the WayPixel-style signal the
+      shortest-path teacher follows.</figcaption>
     </figure>
     <h3 class="has-text-centered" style="margin-top:1.8rem">The costmap in action</h3>
     <p class="has-text-centered" style="color:var(--ink2);max-width:660px;margin:.2rem auto 1.2rem">
@@ -232,12 +233,12 @@
     <em>is</em> that signal</strong>, so the prediction is an interaction effect: SP demos
     should stay bad for RGB but become more learnable through the costmap. Both arms were
     retrained on SP demos at the same 8M-frame budget and evaluated on the same held-out split.</p>
-    <figure style="margin:1.2rem 0 0">
-      <img src="figs/results_sp.png" alt="Costmap+SP vs RGB+SP on Success, SPL and softSPL" style="width:100%;display:block">
+    <figure class="plot" style="max-width:780px">
+      <img src="figs/results_sp.png" alt="Costmap+SP vs RGB+SP on Success, SPL and softSPL">
+      <figcaption>Costmap+SP wins on all three: Success ×1.5, SPL ×1.8, softSPL ×1.35. Its
+      final checkpoint is its best (monotonic 25k &gt; 20k &gt; 15k) — no overfitting collapse,
+      hinting it would climb with more training.</figcaption>
     </figure>
-    <p class="tbl-note has-text-centered">Costmap+SP wins on all three: Success ×1.5, SPL ×1.8,
-    softSPL ×1.35. Its final checkpoint is its best (monotonic 25k &gt; 20k &gt; 15k) — no
-    overfitting collapse, hinting it would climb with more training.</p>
   </div>
 </section>
 
