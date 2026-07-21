@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 350" role="img" aria-labelledby="title desc">
+  <title id="title">Success across the full internship</title><desc id="desc">Human-demo policies have zero success; shortest-path costmap reaches 3.2 percent and beats both RGB variants.</desc>
+  <style>.eyebrow{font:700 13px Inter,Arial;letter-spacing:1.6px;fill:#64748b}.phase{font:650 15px Inter,Arial;fill:#58677a}.val{font:750 22px Inter,Arial;fill:#172334}.lab{font:500 13px Inter,Arial;fill:#5e6b7c}.axis{stroke:#dce4ee;stroke-width:1}</style>
+  <rect width="1120" height="350" rx="26" fill="#f7f9fc"/>
+  <text x="48" y="45" class="eyebrow">SUCCESS ON HELD-OUT VALIDATION</text>
+  <rect x="48" y="69" width="390" height="232" rx="18" fill="#eef2f7"/><text x="72" y="99" class="phase">Phase 1 · Human demonstrations</text>
+  <line x1="72" y1="249" x2="414" y2="249" class="axis"/>
+  <rect x="117" y="245" width="82" height="4" rx="2" fill="#d47aa9"/><text x="158" y="229" text-anchor="middle" class="val">0.0%</text><text x="158" y="277" text-anchor="middle" class="lab">RGB</text>
+  <rect x="286" y="245" width="82" height="4" rx="2" fill="#3568e8"/><text x="327" y="229" text-anchor="middle" class="val">0.0%</text><text x="327" y="277" text-anchor="middle" class="lab">Costmap</text>
+  <rect x="462" y="69" width="610" height="232" rx="18" fill="#fff" stroke="#e1e8f0"/><text x="486" y="99" class="phase">Phase 2 · Shortest-path demonstrations</text>
+  <line x1="486" y1="249" x2="1048" y2="249" class="axis"/>
+  <rect x="545" y="160" width="92" height="89" rx="8" fill="#d47aa9"/><text x="591" y="147" text-anchor="middle" class="val">1.8%</text><text x="591" y="277" text-anchor="middle" class="lab">RGB · 1e-3</text>
+  <rect x="720" y="145" width="92" height="104" rx="8" fill="#28a68a"/><text x="766" y="132" text-anchor="middle" class="val">2.1%</text><text x="766" y="277" text-anchor="middle" class="lab">RGB · matched</text>
+  <rect x="895" y="90" width="92" height="159" rx="8" fill="#3568e8"/><text x="941" y="77" text-anchor="middle" class="val">3.2%</text><text x="941" y="277" text-anchor="middle" class="lab">Costmap</text>
+</svg>

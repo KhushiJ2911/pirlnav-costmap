@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 440" role="img" aria-labelledby="title desc">
+  <title id="title">Shortest-path demonstration results</title>
+  <desc id="desc">Costmap outperforms matched RGB on success, SPL, and softSPL.</desc>
+  <style>.eyebrow{font:700 13px Inter,Arial;letter-spacing:1.7px;fill:#64748b}.metric{font:700 19px Inter,Arial;fill:#172334}.value{font:750 24px Inter,Arial;fill:#172334}.label{font:500 13px Inter,Arial;fill:#637083}.axis{stroke:#dbe3ed;stroke-width:1}.note{font:600 14px Inter,Arial;fill:#3568e8}</style>
+  <rect width="1120" height="440" rx="26" fill="#f7f9fc"/>
+  <text x="52" y="48" class="eyebrow">HELD-OUT HM3D-V2 VALIDATION · 1,000 EPISODES</text>
+  <text x="1068" y="48" text-anchor="end" class="note">matched 8M-frame budget</text>
+  <g transform="translate(52 82)">
+    <rect width="322" height="306" rx="18" fill="#fff" stroke="#e2e8f0"/><text x="24" y="38" class="metric">Success</text><text x="298" y="38" text-anchor="end" class="eyebrow">%</text>
+    <line x1="24" y1="244" x2="298" y2="244" class="axis"/>
+    <rect x="48" y="72" width="62" height="172" rx="8" fill="#3568e8"/><text x="79" y="62" text-anchor="middle" class="value">3.2</text><text x="79" y="270" text-anchor="middle" class="label">Costmap</text>
+    <rect x="130" y="131" width="62" height="113" rx="8" fill="#28a68a"/><text x="161" y="121" text-anchor="middle" class="value">2.1</text><text x="161" y="270" text-anchor="middle" class="label">RGB matched</text>
+    <rect x="212" y="147" width="62" height="97" rx="8" fill="#d47aa9"/><text x="243" y="137" text-anchor="middle" class="value">1.8</text><text x="243" y="270" text-anchor="middle" class="label">RGB 1e-3</text>
+  </g>
+  <g transform="translate(399 82)">
+    <rect width="322" height="306" rx="18" fill="#fff" stroke="#e2e8f0"/><text x="24" y="38" class="metric">SPL</text><text x="298" y="38" text-anchor="end" class="eyebrow">%</text>
+    <line x1="24" y1="244" x2="298" y2="244" class="axis"/>
+    <rect x="48" y="72" width="62" height="172" rx="8" fill="#3568e8"/><text x="79" y="62" text-anchor="middle" class="value">2.01</text><text x="79" y="270" text-anchor="middle" class="label">Costmap</text>
+    <rect x="130" y="150" width="62" height="94" rx="8" fill="#28a68a"/><text x="161" y="140" text-anchor="middle" class="value">1.10</text><text x="161" y="270" text-anchor="middle" class="label">RGB matched</text>
+    <rect x="212" y="170" width="62" height="74" rx="8" fill="#d47aa9"/><text x="243" y="160" text-anchor="middle" class="value">0.86</text><text x="243" y="270" text-anchor="middle" class="label">RGB 1e-3</text>
+  </g>
+  <g transform="translate(746 82)">
+    <rect width="322" height="306" rx="18" fill="#fff" stroke="#e2e8f0"/><text x="24" y="38" class="metric">softSPL</text><text x="298" y="38" text-anchor="end" class="eyebrow">score</text>
+    <line x1="24" y1="244" x2="298" y2="244" class="axis"/>
+    <rect x="48" y="72" width="62" height="172" rx="8" fill="#3568e8"/><text x="79" y="62" text-anchor="middle" class="value">.225</text><text x="79" y="270" text-anchor="middle" class="label">Costmap</text>
+    <rect x="130" y="117" width="62" height="127" rx="8" fill="#28a68a"/><text x="161" y="107" text-anchor="middle" class="value">.166</text><text x="161" y="270" text-anchor="middle" class="label">RGB matched</text>
+    <rect x="212" y="109" width="62" height="135" rx="8" fill="#d47aa9"/><text x="243" y="99" text-anchor="middle" class="value">.176</text><text x="243" y="270" text-anchor="middle" class="label">RGB 1e-3</text>
+  </g>
+</svg>

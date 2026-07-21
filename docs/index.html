@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;750&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#1a1a1a; --ink2:#4a4a4a; --muted:#8a8a8a; --line:#ededed;
@@ -62,6 +62,65 @@
   pre.bib{background:#f6f6f4;border:1px solid var(--line);border-radius:10px;padding:1rem 1.2rem;overflow-x:auto;font-size:.82rem;line-height:1.5}
   .footer{background:#fafafa;color:var(--muted);font-size:.9rem}
   .footer a{color:var(--accent)}
+
+  /* Cohesive research-page system */
+  :root{
+    --ink:#172334; --ink2:#536176; --muted:#7b899b; --line:#e3e9f1;
+    --cm:#3568e8; --rgbm:#28a68a; --rgb1:#d47aa9; --good:#13856d;
+    --accent:#3568e8; --paper:#f7f9fc; --navy:#152238;
+  }
+  html{scroll-behavior:smooth;background:#fff}
+  body{font-family:'Inter',system-ui,-apple-system,sans-serif;color:var(--ink);line-height:1.72;font-size:16px;text-rendering:optimizeLegibility}
+  a{color:var(--accent);text-underline-offset:3px}
+  .container.is-max-desktop{max-width:1060px}
+  .reading{max-width:790px;margin-left:auto;margin-right:auto}
+  .hero{position:relative;overflow:hidden;background:linear-gradient(145deg,#f8fbff 0%,#fff 54%,#f3faf8 100%);border-bottom:1px solid var(--line)}
+  .hero:before{content:"";position:absolute;width:520px;height:520px;border-radius:50%;right:-220px;top:-270px;background:radial-gradient(circle,rgba(53,104,232,.12),rgba(53,104,232,0) 70%)}
+  .hero:after{content:"";position:absolute;width:380px;height:380px;border-radius:50%;left:-210px;bottom:-250px;background:radial-gradient(circle,rgba(40,166,138,.1),rgba(40,166,138,0) 70%)}
+  .hero-body{padding:5.2rem 1.5rem 4.6rem;position:relative;z-index:1}
+  .publication-title{font-family:'Manrope',sans-serif;font-weight:800;letter-spacing:-.045em;font-size:clamp(2.65rem,6vw,4.85rem)!important;line-height:1.02;margin-bottom:1.25rem!important;color:var(--navy)}
+  .kicker{display:inline-flex;align-items:center;gap:.55rem;font-size:.74rem;letter-spacing:.15em;color:#4b6485;background:#fff;border:1px solid #dce6f2;border-radius:999px;padding:.46rem .78rem;margin-bottom:1.45rem;box-shadow:0 5px 20px rgba(24,46,76,.05)}
+  .kicker:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--cm)}
+  .subtitle-tag{color:var(--ink2);font-size:clamp(1.03rem,2vw,1.22rem);max-width:760px;line-height:1.62;margin:0 auto 1.35rem}
+  .authors{font-size:1.06rem;font-weight:650}.affil{font-size:.93rem;margin-bottom:1.55rem}
+  .buttons.is-centered{gap:.45rem}.buttons.is-centered .button{margin:0}
+  .button.is-dark{height:2.65rem;background:var(--navy);border:0;padding:0 1.12rem;font-size:.88rem;box-shadow:0 5px 16px rgba(21,34,56,.13);transition:transform .2s,box-shadow .2s,background .2s}
+  .button.is-dark:hover{background:#243755;transform:translateY(-2px);box-shadow:0 9px 20px rgba(21,34,56,.18)}
+  section.section{padding:5rem 1.5rem}
+  section.section.compact{padding-top:3.6rem;padding-bottom:3.6rem}
+  .softline{display:none}
+  .section:nth-of-type(2n+4){background:var(--paper)}
+  .section-heading{text-align:center;max-width:780px;margin:0 auto 2.2rem}
+  .section-index{display:block;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--cm);margin-bottom:.6rem}
+  .title.is-3{font-family:'Manrope',sans-serif;font-size:clamp(1.7rem,3vw,2.35rem);line-height:1.2;letter-spacing:-.028em;color:var(--navy);margin-bottom:.8rem}
+  .section-deck{color:var(--ink2);font-size:1.02rem;line-height:1.65;margin:0 auto}
+  .content p{margin-bottom:1.12rem}.content strong{color:var(--navy)}
+  .highlight{background:var(--navy);border:0;border-radius:22px;padding:2rem 2.2rem;color:#fff;text-align:left;box-shadow:0 18px 50px rgba(22,37,61,.15)}
+  .highlight .lead{color:#fff;font-size:1.16rem;line-height:1.65;margin:0!important}.highlight strong{color:#fff}.highlight .result-kicker{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:#9db8ef;font-weight:700;margin-bottom:.6rem}
+  .result-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:1.5rem;background:rgba(255,255,255,.13);border-radius:13px;overflow:hidden}
+  .result-stat{background:rgba(255,255,255,.04);padding:1rem 1.15rem}.result-stat b{display:block;color:#fff;font-family:'Manrope';font-size:1.65rem;line-height:1.2}.result-stat span{font-size:.78rem;color:#b8c5d8}
+  .research-figure{margin:2rem auto 0}.research-figure img{display:block;width:100%;height:auto;border-radius:20px}.research-figure.framed{background:#fff;border:1px solid var(--line);border-radius:22px;padding:.75rem;box-shadow:0 12px 38px rgba(24,42,66,.07)}
+  figcaption{color:#66758a;font-size:.86rem;line-height:1.6;margin:.85rem auto 0;max-width:760px}
+  .method-copy{display:grid;grid-template-columns:1fr 1fr;gap:2.4rem;align-items:start;margin-top:2.4rem}
+  .method-copy p{margin:0}.method-copy .mini-label{display:block;color:var(--cm);font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem}
+  .phase-label{font-size:.72rem;letter-spacing:.15em;margin-bottom:.65rem}
+  .media-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.25rem;margin-top:1.6rem}
+  .rollout-card{margin:0;background:#fff;border:1px solid var(--line);border-radius:17px;padding:.55rem;box-shadow:0 8px 26px rgba(28,48,73,.06);overflow:hidden}
+  .rollout-card img{width:100%;display:block;border-radius:12px}.rollout-card figcaption{display:flex;justify-content:space-between;align-items:center;margin:.55rem .4rem .15rem;color:var(--ink2);font-size:.82rem}.rollout-card figcaption:before{content:"unseen HM3D scene";font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  .costmap-triptych{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.3rem}.costmap-triptych>div{background:#fff;border:1px solid var(--line);padding:.45rem;border-radius:14px}.costmap-triptych img{width:100%;display:block;border-radius:9px}.figstep{font-size:.7rem;margin:.4rem 0 .05rem}
+  .table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:0 8px 28px rgba(25,43,68,.045)}
+  table.tbl{margin:0;font-size:.9rem}table.tbl th,table.tbl td{padding:.82rem 1rem;border-bottom:1px solid #e8edf3}table.tbl tbody tr:last-child td{border-bottom:0}table.tbl thead th{background:#f7f9fc;border-bottom:1px solid #dce4ee;text-transform:uppercase;letter-spacing:.055em;font-size:.7rem}table.tbl tbody tr:hover{background:#fafcff}
+  .win{color:var(--good)}.tbl-note{font-size:.81rem;line-height:1.55}
+  .insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.6rem 0 2rem}.insight-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.3rem}.insight-card .num{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:#eaf0ff;color:var(--cm);font-size:.8rem;font-weight:750;margin-bottom:.9rem}.insight-card h4{font-family:'Manrope';font-weight:750;margin-bottom:.45rem}.insight-card p{font-size:.89rem;color:var(--ink2);line-height:1.62;margin:0}
+  .engineering-note{background:linear-gradient(135deg,#eef4ff,#edf9f7);border:1px solid #d8e5ef;border-radius:18px;padding:1.5rem 1.65rem}
+  pre.bib{background:var(--navy);color:#dce6f5;border:0;border-radius:16px;padding:1.35rem 1.5rem;font-size:.79rem;box-shadow:0 10px 30px rgba(22,37,61,.1)}
+  .footer{background:#111c2d;color:#94a4b8;padding:2.5rem 1.5rem}.footer a{color:#c5d5f4}.footer p{max-width:760px;margin:auto;line-height:1.65}
+  @media(max-width:768px){
+    .hero-body{padding:3.8rem 1.15rem 3.4rem}.publication-title{font-size:2.65rem!important}.subtitle-tag{font-size:1rem}.buttons.is-centered{display:grid;grid-template-columns:1fr 1fr;width:100%;max-width:340px;margin:auto}.button.is-dark{width:100%}
+    section.section{padding:3.7rem 1.15rem}.highlight{padding:1.5rem}.result-strip{grid-template-columns:1fr}.result-stat{display:flex;align-items:baseline;gap:.65rem}.result-stat b{font-size:1.35rem}
+    .method-copy,.insight-grid{grid-template-columns:1fr;gap:1rem}.media-grid{grid-template-columns:1fr}.costmap-triptych{gap:.45rem}.research-figure.framed{padding:.35rem;border-radius:15px}.research-figure img{border-radius:12px}
+    .rollout-card figcaption:before{display:none}.table-wrap{border-radius:12px}table.tbl{min-width:660px}
+  }
 </style>
 </head>
 <body>
@@ -90,28 +149,31 @@
   </div>
 </section>
 
-<section class="section" style="padding-top:.5rem">
+<section class="section compact">
   <div class="container is-max-desktop">
     <div class="highlight">
-      <p class="lead" style="margin-bottom:.4rem"><strong>Result.</strong> With
+      <p class="result-kicker">Headline result</p>
+      <p class="lead">With
       shortest-path demos at a matched 8M-frame budget, the costmap-conditioned policy
-      generalizes <strong>better than RGB on every metric</strong> — Success
-      <strong>3.2% vs 2.1%</strong>, SPL <strong>2.0% vs 1.1%</strong>, softSPL
-      <strong>0.225 vs 0.166</strong> — on the held-out 1000-episode HM3D-v2 val split.</p>
-      <p style="color:var(--ink2);margin:0">With human demos, both inputs hit a shared
-      ceiling (0% success) — a budget/perception limit the costmap can't lift on its own.</p>
+      generalizes <strong>better than matched RGB on every metric</strong> on the held-out
+      1,000-episode HM3D-v2 validation split.</p>
+      <div class="result-strip" aria-label="Costmap improvement over matched RGB">
+        <div class="result-stat"><b>1.5×</b><span>higher success</span></div>
+        <div class="result-stat"><b>1.8×</b><span>higher SPL</span></div>
+        <div class="result-stat"><b>1.35×</b><span>higher softSPL</span></div>
+      </div>
     </div>
-    <figure style="margin:1.8rem 0 0">
-      <img src="figs/success_all.png" alt="Success rate across all arms, both phases" style="width:100%;max-width:720px;display:block;margin:0 auto">
+    <figure class="research-figure">
+      <img src="figs/story_clean.svg" alt="Success rate across all arms and both experimental phases">
+      <figcaption class="has-text-centered">Human-demo policies share a zero-success ceiling at this budget. Under shortest-path supervision, the costmap-conditioned policy separates from both RGB controls.</figcaption>
     </figure>
   </div>
 </section>
 
-<section class="section" style="padding-top:.5rem">
+<section class="section compact">
   <div class="container is-max-desktop content">
-    <div class="columns is-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3 has-text-centered">Abstract</h2>
+    <div class="reading">
+        <div class="section-heading"><span class="section-index">Overview</span><h2 class="title is-3">Abstract</h2></div>
         <p><a href="https://arxiv.org/abs/2301.07302">PIRLNav</a> trains ObjectNav agents
         by behavior cloning (BC) on human demonstrations (64.1% success), then RL-finetunes
         to 70.4%. <a href="https://mast3r-nav.github.io/">MASt3R-Nav</a> shows a dense
@@ -125,7 +187,6 @@
         <strong>shortest-path demonstrations</strong>, the costmap isolates a clear,
         consistent win over RGB on every metric — evidence that the interface changes which
         teachers are learnable, even while absolute performance stays capped.</p>
-      </div>
     </div>
   </div>
 </section>
@@ -133,14 +194,17 @@
 <hr class="softline">
 <section class="section">
   <div class="container is-max-desktop content">
-    <h2 class="title is-3 has-text-centered">Method — the costmap sensor</h2>
-    <p>An online sensor computes the ground-truth geodesic distance from every navigable
+    <div class="section-heading">
+      <span class="section-index">01 · Method</span>
+      <h2 class="title is-3">From geodesic field to policy input</h2>
+      <p class="section-deck">The agent does not receive a global map. It sees an egocentric projection of oracle cost-to-goal values through the same limited depth camera used at inference.</p>
+    </div>
+    <div class="method-copy"><p><span class="mini-label">Field construction</span>An online sensor computes the ground-truth geodesic distance from every navigable
     grid point to the nearest goal (one multi-goal shortest-path query per grid point over
     the navmesh; KD-tree lookup; cached per scene+category; validated against offline GT to
-    MAE 0.06–0.10 m). Each step it back-projects the agent’s depth image onto that field to
-    produce an egocentric costmap the policy sees instead of RGB.</p>
-    <figure style="margin:1.4rem 0">
-      <img src="figs/geodesic_field.png" alt="Top-down geodesic cost-to-goal field" style="width:100%;max-width:660px;display:block;margin:0 auto">
+    MAE 0.06–0.10 m).</p><p><span class="mini-label">Per-step observation</span>Each step, depth pixels are back-projected into world coordinates and looked up in the field, producing a 2D costmap aligned with the agent’s current view.</p></div>
+    <figure class="research-figure framed" style="max-width:780px">
+      <img src="figs/geodesic_clean.svg" alt="Top-down geodesic cost-to-goal field" style="width:100%;max-width:760px;display:block;margin:0 auto">
       <figcaption class="has-text-centered">The quantity the costmap encodes: geodesic
       distance from every point to the goal (dark = near). Walls bend the contours — the
       isolated left room is geodesically <em>far</em> despite being spatially close, because
@@ -148,24 +212,24 @@
       <span style="color:var(--muted)">(Schematic on a synthetic floorplan; the real sensor
       computes the same field over the HM3D navmesh.)</span></figcaption>
     </figure>
-    <figure style="margin:1.4rem 0">
-      <img src="figs/pipeline.png" alt="Costmap-conditioned PIRLNav architecture" style="width:100%;display:block">
+    <figure class="research-figure">
+      <img src="figs/pipeline_clean.svg" alt="Costmap-conditioned PIRLNav architecture">
       <figcaption class="has-text-centered">The pipeline. The two arms are identical except
       for the input: the costmap arm feeds the policy a 2-channel egocentric costmap derived
       from the ground-truth geodesic field; the RGB baseline feeds a first-person image
       through a pretrained encoder. Everything downstream (CNN + GRU policy) is shared.</figcaption>
     </figure>
-    <p><strong>The 2-channel fix (a key Phase-1 result).</strong> A naïve 1-channel costmap
+    <div class="reading" style="margin-top:2.4rem"><p><strong>The 2-channel fix.</strong> A naïve 1-channel costmap
     (globally scaled) left the within-frame gradient spanning only ~4% of the input range —
     the from-scratch encoder ignored it and the policy collapsed to the action-prior floor.
     The fix is a 2-channel transform: <strong>channel 0</strong> = absolute cost (“how far
     is the goal” → the STOP cue), <strong>channel 1</strong> = per-frame contrast-stretched
-    cost (“which way is downhill” → the steering cue).</p>
+    cost (“which way is downhill” → the steering cue).</p></div>
     <figure>
-      <div class="columns is-mobile" style="margin-bottom:0">
-        <div class="column"><img src="figs/cm_step0.png" alt="2-channel costmap at rollout step 0" style="width:100%;border:1px solid var(--line);border-radius:8px"><div class="figstep">rollout step 0</div></div>
-        <div class="column"><img src="figs/cm_step3.png" alt="2-channel costmap at rollout step 3" style="width:100%;border:1px solid var(--line);border-radius:8px"><div class="figstep">step 3</div></div>
-        <div class="column"><img src="figs/cm_step6.png" alt="2-channel costmap at rollout step 6" style="width:100%;border:1px solid var(--line);border-radius:8px"><div class="figstep">step 6</div></div>
+      <div class="costmap-triptych">
+        <div><img src="figs/cm_step0.png" alt="2-channel costmap at rollout step 0"><div class="figstep">rollout step 0</div></div>
+        <div><img src="figs/cm_step3.png" alt="2-channel costmap at rollout step 3"><div class="figstep">step 3</div></div>
+        <div><img src="figs/cm_step6.png" alt="2-channel costmap at rollout step 6"><div class="figstep">step 6</div></div>
       </div>
       <figcaption class="has-text-centered">The actual 2-channel costmap the policy sees, at
       three steps of one rollout. In each frame the <strong>left half is channel 0</strong>
@@ -175,18 +239,18 @@
       exposing the “downhill” gradient the agent steers along). This is the WayPixel-style
       signal the shortest-path teacher follows.</figcaption>
     </figure>
-    <h3 class="has-text-centered" style="margin-top:1.8rem">The costmap in action</h3>
+    <div class="section-heading" style="margin-top:4rem"><span class="section-index">Qualitative rollouts</span><h3 class="title is-3">The costmap in action</h3>
     <p class="has-text-centered" style="color:var(--ink2);max-width:660px;margin:.2rem auto 1.2rem">
       Rollouts on four unseen HM3D houses. In each panel: the agent's first-person view (left)
       and the live cost-to-goal costmap over that view (right) — dark marks the direction toward
-      the goal, and the agent simply glides down the geodesic field until it arrives.</p>
-    <div class="columns is-multiline is-2">
-      <div class="column is-half"><figure style="margin:0"><img src="figs/rollout_bed.gif" alt="find the bed" style="width:100%;display:block;border:1px solid var(--line);border-radius:10px"><figcaption class="has-text-centered" style="margin-top:.45rem;font-size:.9rem">find the <strong>bed</strong></figcaption></figure></div>
-      <div class="column is-half"><figure style="margin:0"><img src="figs/rollout_tv.gif" alt="find the tv" style="width:100%;display:block;border:1px solid var(--line);border-radius:10px"><figcaption class="has-text-centered" style="margin-top:.45rem;font-size:.9rem">find the <strong>tv</strong></figcaption></figure></div>
-      <div class="column is-half"><figure style="margin:0"><img src="figs/rollout_sofa.gif" alt="find the sofa" style="width:100%;display:block;border:1px solid var(--line);border-radius:10px"><figcaption class="has-text-centered" style="margin-top:.45rem;font-size:.9rem">find the <strong>sofa</strong></figcaption></figure></div>
-      <div class="column is-half"><figure style="margin:0"><img src="figs/rollout_chair.gif" alt="find the chair" style="width:100%;display:block;border:1px solid var(--line);border-radius:10px"><figcaption class="has-text-centered" style="margin-top:.45rem;font-size:.9rem">find the <strong>chair</strong></figcaption></figure></div>
+      the goal, and the agent simply glides down the geodesic field until it arrives.</p></div>
+    <div class="media-grid">
+      <figure class="rollout-card"><img src="figs/rollout_bed.gif" alt="Agent navigating to a bed"><figcaption>find the <strong>bed</strong></figcaption></figure>
+      <figure class="rollout-card"><img src="figs/rollout_tv.gif" alt="Agent navigating to a television"><figcaption>find the <strong>tv</strong></figcaption></figure>
+      <figure class="rollout-card"><img src="figs/rollout_sofa.gif" alt="Agent navigating to a sofa"><figcaption>find the <strong>sofa</strong></figcaption></figure>
+      <figure class="rollout-card"><img src="figs/rollout_chair.gif" alt="Agent navigating to a chair"><figcaption>find the <strong>chair</strong></figcaption></figure>
     </div>
-    <figure style="margin:1.5rem 0 0">
+    <figure class="research-figure framed" style="max-width:600px">
       <img src="figs/rollout_topdown.png" alt="Top-down trajectory descending the cost-to-goal field" style="width:100%;max-width:540px;display:block;margin:0 auto;border:1px solid var(--line);border-radius:10px">
       <figcaption class="has-text-centered">Top-down of the bed rollout — the path descends the
       geodesic cost-to-goal field, from far (yellow) into the goal (dark). Navigating <em>is</em>
@@ -198,12 +262,13 @@
 <hr class="softline">
 <section class="section">
   <div class="container is-max-desktop content">
-    <p class="phase-label">Phase 1 · Human demonstrations</p>
-    <h2 class="title is-3 has-text-centered">Reproducing PIRLNav — and hitting a ceiling</h2>
-    <p>Both arms were trained by BC on human demos at a matched <strong>8M-frame</strong>
+    <div class="section-heading"><span class="section-index">02 · Phase one</span><p class="phase-label">Human demonstrations</p>
+    <h2 class="title is-3">Reproducing PIRLNav—and hitting a ceiling</h2></div>
+    <div class="reading"><p>Both arms were trained by BC on human demos at a matched <strong>8M-frame</strong>
     budget (effective batch 16,320 ≈ the paper’s, via gradient accumulation on a single
     16 GB GPU). Training fit was healthy and near-identical (action accuracy ~0.74) — but on
-    the full 1000-episode HM3D-v2 val split, <strong>both scored 0.0% success</strong>:</p>
+    the full 1,000-episode HM3D-v2 val split, <strong>both scored 0.0% success</strong>:</p></div>
+    <div class="table-wrap">
     <table class="tbl">
       <thead><tr><th>Arm — human demos, 8M frames</th><th>Train acc</th><th>Success</th><th>SPL</th><th>softSPL</th></tr></thead>
       <tbody>
@@ -212,28 +277,29 @@
         <tr><td><em>PIRLNav paper (77k demos, full budget)</em></td><td>—</td><td>64.1%</td><td>27.1%</td><td>—</td></tr>
       </tbody>
     </table>
-    <p style="margin-top:1rem">An oracle costmap did <em>not</em> collapse the difficulty
+    </div>
+    <div class="reading" style="margin-top:1.4rem"><p>An oracle costmap did <em>not</em> collapse the difficulty
     here — both inputs failed identically on unseen scenes. The leading interpretation: with
     wandering human demos, the bottleneck is the <strong>teacher and the budget</strong>, not
     the input. (BC punishes navigating better than the teacher, and at ~0.8 epoch neither
     input has learned to generalize.) The lab server was lost at the internship’s end;
-    everything below was rebuilt from scratch on rented GPUs.</p>
+    everything below was rebuilt from scratch on rented GPUs.</p></div>
   </div>
 </section>
 
 <hr class="softline">
 <section class="section">
   <div class="container is-max-desktop content">
-    <p class="phase-label">Phase 2 · Shortest-path demonstrations</p>
-    <h2 class="title is-3 has-text-centered">A sharper test — and the costmap wins</h2>
-    <p>Shortest-path (SP) demos beeline to the goal using privileged geodesic information.
+    <div class="section-heading"><span class="section-index">03 · Phase two</span><p class="phase-label">Shortest-path demonstrations</p>
+    <h2 class="title is-3">A sharper test—and the costmap wins</h2></div>
+    <div class="reading"><p>Shortest-path (SP) demos beeline to the goal using privileged geodesic information.
     PIRLNav shows they’re a <em>terrible</em> teacher for RGB (6.4% vs 64.1%) — the policy
     can’t see the privileged signal the teacher follows. But <strong>the costmap
     <em>is</em> that signal</strong>, so the prediction is an interaction effect: SP demos
     should stay bad for RGB but become more learnable through the costmap. Both arms were
-    retrained on SP demos at the same 8M-frame budget and evaluated on the same held-out split.</p>
-    <figure style="margin:1.2rem 0 0">
-      <img src="figs/results_sp.png" alt="Costmap+SP vs RGB+SP on Success, SPL and softSPL" style="width:100%;display:block">
+    retrained on SP demos at the same 8M-frame budget and evaluated on the same held-out split.</p></div>
+    <figure class="research-figure">
+      <img src="figs/results_clean.svg" alt="Costmap and RGB shortest-path results on Success, SPL and softSPL">
     </figure>
     <p class="tbl-note has-text-centered">Costmap+SP wins on all three: Success ×1.5, SPL ×1.8,
     softSPL ×1.35. Its final checkpoint is its best (monotonic 25k &gt; 20k &gt; 15k) — no
@@ -244,9 +310,11 @@
 <hr class="softline">
 <section class="section">
   <div class="container is-max-desktop content">
-    <h2 class="title is-3 has-text-centered">Results — the whole internship</h2>
-    <p class="has-text-centered" style="color:var(--ink2)">Full 1000-episode HM3D-v2 val,
+    <div class="section-heading"><span class="section-index">04 · Complete results</span><h2 class="title is-3">The whole internship at a glance</h2>
+    <p class="section-deck">Full 1,000-episode HM3D-v2 validation,
     deterministic actions, matched 8M-frame budget (~0.8 epoch). Best checkpoint per arm.</p>
+    </div>
+    <div class="table-wrap">
     <table class="tbl">
       <thead><tr><th>Phase · Teacher</th><th>Input</th><th>Success</th><th>SPL</th><th>softSPL</th></tr></thead>
       <tbody>
@@ -258,6 +326,7 @@
         <tr><td colspan="5" class="tbl-note">Reference — PIRLNav paper: human demos 64.1% / 27.1%; shortest-path demos 6.4% / 5.0%.</td></tr>
       </tbody>
     </table>
+    </div>
     <p class="tbl-note">Phase 1 shows the ceiling (both inputs → 0% on human demos); Phase 2
     isolates the costmap’s contribution under a cleaner teacher — a consistent win on every metric.</p>
   </div>
@@ -266,22 +335,17 @@
 <hr class="softline">
 <section class="section">
   <div class="container is-max-desktop content">
-    <h2 class="title is-3 has-text-centered">Why absolute performance is capped</h2>
-    <p>The costmap-vs-RGB result is clear, but every arm sits far below the paper’s 64%.
-    Three entangled causes — none the costmap can fix on its own:</p>
-    <div class="columns">
-      <div class="column"><h4 style="font-weight:700">1 · Undertraining</h4>
-        <p style="font-size:.95rem">~0.8 epoch vs the paper’s ~33 (~500M steps on 64 GPUs).
-        The LR decays to ~0 by 8M steps, forcing learning to stop before even one full pass.</p></div>
-      <div class="column"><h4 style="font-weight:700">2 · The teacher</h4>
-        <p style="font-size:.95rem">Human demos wander (perfect imitation ≈ SPL 0.47); BC
-        punishes beating the teacher, so a privileged input has little room. SP demos remove
-        this — and the costmap advantage appears.</p></div>
-      <div class="column"><h4 style="font-weight:700">3 · Representation</h4>
-        <p style="font-size:.95rem">FOV / 5 m depth / low resolution. The costmap is
-        back-projected through the same limited depth camera, so it inherits the ceiling —
-        it can’t show a goal beyond the horizon.</p></div>
+    <div class="section-heading"><span class="section-index">05 · Limitations</span><h2 class="title is-3">Why absolute performance is capped</h2>
+    <p class="section-deck">The comparative result is clear, but every arm remains far below PIRLNav’s full-budget result. Three factors are entangled.</p></div>
+    <div class="insight-grid">
+      <div class="insight-card"><div class="num">01</div><h4>Undertraining</h4>
+        <p>~0.8 epoch versus the paper’s ~33 (~500M steps on 64 GPUs). The learning rate reaches nearly zero before one complete pass.</p></div>
+      <div class="insight-card"><div class="num">02</div><h4>The teacher</h4>
+        <p>Human demos wander; BC punishes beating the teacher. Shortest-path demos remove this mismatch, revealing the costmap advantage.</p></div>
+      <div class="insight-card"><div class="num">03</div><h4>Representation</h4>
+        <p>A limited field of view, 5 m depth range, and low resolution mean the projected costmap cannot reveal goals beyond the current horizon.</p></div>
     </div>
+    <div class="table-wrap">
     <table class="tbl" style="margin-top:1rem">
       <thead><tr><th>Training budget</th><th>PIRLNav (BC)</th><th>This work</th></tr></thead>
       <tbody>
@@ -291,6 +355,7 @@
         <tr><td>Epochs over demos</td><td>~33</td><td>~0.8</td></tr>
       </tbody>
     </table>
+    </div>
     <p class="tbl-note">Same LR (1e-3, linearly decayed). Both arms share the identical
     budget, so the costmap-vs-RGB comparison holds regardless of this ceiling.</p>
   </div>
@@ -299,15 +364,15 @@
 <hr class="softline">
 <section class="section">
   <div class="container is-max-desktop content">
-    <h2 class="title is-3 has-text-centered">Engineering &amp; future work</h2>
-    <p>Rebuilding the stack on rented GPUs and training the costmap arm to completion
+    <div class="section-heading"><span class="section-index">06 · Engineering</span><h2 class="title is-3">Making the experiment reliable</h2></div>
+    <div class="engineering-note"><p>Rebuilding the stack on rented GPUs and training the costmap arm to completion
     surfaced several failure modes, each fixed: the 1-ch costmap being ignored (→ the
     2-channel transform); NaN divergence (→ lr 5e-4 + grad-clip 0.1 + a non-finite-gradient
     guard); field-build hangs on pathological navmeshes (→ offline precompute in
     hard-<code>terminate()</code>-able subprocesses, loaded from disk); and intermittent CUDA
     crashes (→ a self-healing wrapper that auto-resumes from the last checkpoint on any crash
     and kills+resumes on any hang — the final run recovered 3 crashes across 4 attempts to
-    reach 25k updates automatically).</p>
+    reach 25k updates automatically).</p></div>
     <p><strong>Future work.</strong> Lift the ceiling (wider FOV, deeper depth, higher-res
     costmap, a spatial map) and re-run the comparison; train at full budget (multiple epochs)
     to quantify the undertraining gap. Note the costmap encoder trains <em>from scratch</em>
@@ -319,7 +384,7 @@
 <hr class="softline">
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
-    <h2 class="title is-3">References</h2>
+    <div class="section-heading"><span class="section-index">References</span><h2 class="title is-3">Prior work</h2></div>
     <pre class="bib">@inproceedings{ramrakhya2023pirlnav,
   title     = {PIRLNav: Pretraining with Imitation and RL Finetuning for ObjectNav},
   author    = {Ramrakhya, Ram and Batra, Dhruv and Wijmans, Erik and Das, Abhishek},
