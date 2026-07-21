@@ -165,28 +165,21 @@
       costmaps. <span style="color:var(--muted)">(Schematic on a made-up floorplan; the real sensor
       computes the same thing on the HM3D navmesh.)</span></figcaption>
     </figure>
-    <p><strong>Why two channels.</strong> The costmap stores a real distance at every pixel — how far
-    the goal is from the point that pixel is looking at. Across a whole house those distances run from
+    <p><strong>Why two channels.</strong> The costmap stores a geodesic distance at every pixel. Across a whole house those distances run from
     0&nbsp;m at the goal to roughly 30&nbsp;m in the farthest corner. Our first version just divided
-    every pixel by that global maximum to get a number in [0,&nbsp;1], and handed the policy that
-    single channel. The problem is scale. In any one first-person frame the agent sees only a small
+    every pixel by that global maximum to get a number in [0,&nbsp;1], and handed this single channel to the policy. 
+     Here’s the limitation — In any one first-person frame the agent sees only a small
     slice of the house, so the points in view might all be, say, 5.5 to 7&nbsp;m from the goal.
-    Divided by 30, that entire range collapses into about 0.18–0.23 — a spread of roughly 4% of the
-    input. To a convolutional encoder, the frame is nearly one flat colour.</p>
-    <p>That flatness is fatal for a network that trains from scratch. A CNN learns from spatial
-    contrast — edges and gradients, the differences between neighbouring pixels. When the costmap is
-    almost uniform there is nothing to latch onto: the tiny gradient that actually points toward the
-    goal is buried in the bottom few percent of the range, below what the untrained encoder can
-    resolve. So it learned nothing useful from the input, and the policy fell back to its action prior
-    — walking more or less straight and guessing — which is exactly the collapse we measured.</p>
-    <p>The fix is to hand the policy the same field twice, scaled two different ways.
-    <strong>Channel 0</strong> keeps the global normalisation (distance ÷ max). It is the flat one,
-    but its absolute level still means something: a frame sitting near 0 says the goal is close, which
+    Divided by 30, that entire range collapses into about 0.18–0.23 which is a spread of roughly 4% of the
+    input. To a convolutional encoder, the frame is nearly one flat colour (no gradients) which failed training encoder from scratch.</p>
+    
+    <p>The fix is to hand the policy the same field twice, scaled two different ways which serves different purpose.
+    <strong>Channel 0</strong> keeps the global normalisation (distance ÷ max). It is the absolute frame (flat one). During navigation, a frame sitting near 0 says the goal is close with help of channel 0 map, which
     is the cue the agent needs to decide when to <em>stop</em>. <strong>Channel 1</strong> is
-    contrast-stretched per frame — we take the smallest and largest distance visible in that single
+    relative frame. Here, we take the smallest and largest distance visible in that single
     frame and rescale them to fill the whole [0,&nbsp;1] range. That throws away absolute scale, but
-    it blows the within-frame gradient up to full contrast, so the direction in which cost falls —
-    the way to the goal — becomes obvious. One channel says <em>how&nbsp;far</em>, the other says
+    it blows the within-frame gradient up to full contrast, so descent becomes obvious.
+    One channel says <em>how&nbsp;far</em>, the other says
     <em>which&nbsp;way</em>, and the policy needs both.</p>
     <figure class="plot" style="max-width:900px">
       <img src="figs/two_channel.png" alt="One real rollout frame under each costmap channel">
