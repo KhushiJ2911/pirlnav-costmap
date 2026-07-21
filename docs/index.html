@@ -185,9 +185,8 @@
       <img src="figs/two_channel.png" alt="One real rollout frame under each costmap channel">
       <figcaption><strong>The two channels on one real frame.</strong> On the left, the agent is
       looking down a hallway toward the goal. Channel 0 (raw distance ÷ 30) squashes the gradient
-      into about 4% of the range, so it is nearly one flat colour the encoder can’t read. Its
-      overall brightness still says roughly how far the goal is. Channel 1 stretches that same frame
-      to full contrast, and now the open doorway toward the goal clearly reads dark. Between them the
+      into about 4% of the range, so it is nearly one flat colour the encoder can't see but the difference in brightness across frames helps to see how far we are from the goal. Channel 1 stretches that same frame
+      to full contrast, hence now we can see the open doorway towards the goal in dark. Between them the
       policy gets both <em>how&nbsp;far</em> and <em>which&nbsp;way</em>, the same signal a
       shortest-path teacher already follows. <span style="color:var(--muted)">(White = pixels past
       the 5 m depth range, where we can’t compute a cost.)</span></figcaption>
