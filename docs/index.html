@@ -80,10 +80,10 @@
       <p class="kicker">ObjectGoal Navigation · Imitation Learning</p>
       <h1 class="title is-1 publication-title">Costmap-Conditioned PIRLNav</h1>
       <p class="authors"><a href="https://github.com/KhushiJ2911">Khushi Jaiswal</a></p>
-      <p class="venue">COEP Technological University · Internship Project</p>
+      <p class="venue">Robotics Research Center (RRC) · Internship Project</p>
       <p class="subtitle-tag">Does conditioning ObjectNav behavior cloning on a
-        ground-truth geodesic costmap instead of RGB change what a policy can learn —
-        across human and shortest-path demonstrations?</p>
+        ground-truth geodesic costmap instead of RGB change what a policy can learn
+        across human and shortest-path demonstrations? Basically trying to see how policy acts differently when we exchange RGB input in pirlnav pipeline with waypixel costmap inspired by masternav and eventually training a waypixel costmap conditioned RL policy.</p>
       <div class="buttons is-centered">
         <a class="button is-dark" href="https://github.com/KhushiJ2911/pirlnav-costmap">
           <span class="icon"><i class="fab fa-github"></i></span><span>Code</span></a>
@@ -102,18 +102,8 @@
   <div class="container is-max-desktop">
     <figure class="plot" style="margin-top:0;max-width:780px">
       <img src="figs/rollout_tv.gif" alt="Costmap-conditioned agent navigating an unseen HM3D home" style="border:1px solid var(--line);border-radius:12px">
-      <figcaption>The costmap-conditioned policy on an unseen HM3D home — the agent’s first-person
-      view (left) and the live cost-to-goal it steers by (right; dark = toward the goal).</figcaption>
+      <figcaption>This is the rendered view of the agent navigating through the house from HM3D (Habitat-Matterport 3D). The left clip is the RGB image, basically what the agent can actually see and the right one is the costmap version of the same view (dark = toward the goal).</figcaption>
     </figure>
-    <div class="highlight" style="margin-top:2.1rem">
-      <p class="lead" style="margin-bottom:.4rem"><strong>Result.</strong> With
-      shortest-path demos at a matched 8M-frame budget, the costmap-conditioned policy
-      generalizes <strong>better than RGB on every metric</strong> — Success
-      <strong>3.2% vs 2.1%</strong>, SPL <strong>2.0% vs 1.1%</strong>, softSPL
-      <strong>0.225 vs 0.166</strong> — on the held-out 1000-episode HM3D-v2 val split.</p>
-      <p style="color:var(--ink2);margin:0">With human demos, both inputs hit a shared
-      ceiling (0% success) — a budget/perception limit the costmap can’t lift on its own.</p>
-    </div>
   </div>
 </section>
 
@@ -135,6 +125,8 @@
         <strong>shortest-path demonstrations</strong>, the costmap isolates a clear,
         consistent win over RGB on every metric — evidence that the interface changes which
         teachers are learnable, even while absolute performance stays capped.</p>
+        <p style="color:var(--ink2)">The rest of this page is how I got there: first the costmap
+        sensor itself, then the two experiments — which gave two very different answers.</p>
       </div>
     </div>
   </div>
@@ -195,6 +187,10 @@
       <div class="column is-half"><figure style="margin:0"><img src="figs/rollout_sofa.gif" alt="find the sofa" style="width:100%;display:block;border:1px solid var(--line);border-radius:10px"><figcaption class="has-text-centered" style="margin-top:.45rem;font-size:.9rem">find the <strong>sofa</strong></figcaption></figure></div>
       <div class="column is-half"><figure style="margin:0"><img src="figs/rollout_chair.gif" alt="find the chair" style="width:100%;display:block;border:1px solid var(--line);border-radius:10px"><figcaption class="has-text-centered" style="margin-top:.45rem;font-size:.9rem">find the <strong>chair</strong></figcaption></figure></div>
     </div>
+    <p style="margin-top:1.5rem">That is what <em>perfectly</em> descending the costmap looks
+    like — the behaviour I wanted a policy to copy. So the whole internship really comes down to
+    one question: <strong>can a policy actually learn to do this?</strong> I tried it with two
+    different teachers, and they didn’t agree.</p>
   </div>
 </section>
 
@@ -221,6 +217,9 @@
     the input. (BC punishes navigating better than the teacher, and at ~0.8 epoch neither
     input has learned to generalize.) The lab server was lost at the internship’s end;
     everything below was rebuilt from scratch on rented GPUs.</p>
+    <p style="margin-top:1rem"><em>But</em> all of this leaned on human demonstrations — and that
+    turned out to be the catch. What if the teacher, not the input, was the thing holding both
+    arms back? Phase 2 puts exactly that to the test.</p>
   </div>
 </section>
 
@@ -248,6 +247,14 @@
 <section class="section">
   <div class="container is-max-desktop content">
     <h2 class="title is-3 has-text-centered">Results — the whole internship</h2>
+    <div class="highlight" style="margin:.4rem 0 1.6rem">
+      <p class="lead" style="margin-bottom:.4rem"><strong>The takeaway.</strong> The input the
+      policy sees doesn’t move the ceiling — but it changes <em>which teacher</em> it can learn
+      from. Under shortest-path demos the costmap beats RGB on every metric
+      (<strong>3.2% vs 2.1%</strong> success, <strong>2.0% vs 1.1%</strong> SPL,
+      <strong>0.225 vs 0.166</strong> softSPL). Under human demos both sit at 0% — a budget and
+      perception limit the costmap can’t lift by itself.</p>
+    </div>
     <p class="has-text-centered" style="color:var(--ink2)">Full 1000-episode HM3D-v2 val,
     deterministic actions, matched 8M-frame budget (~0.8 epoch). Best checkpoint per arm.</p>
     <figure class="plot" style="max-width:740px;margin-top:.8rem">
