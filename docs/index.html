@@ -149,21 +149,21 @@
     <figure class="plot" style="max-width:960px">
       <img src="figs/method.png" alt="Costmap-conditioned PIRLNav — method overview">
       <figcaption><strong>The full pipeline.</strong> The top row shows how we build the 2-channel
-      costmap. Given the house and the goal, we work out how far the goal is from every spot on the
-      floor, then paint that onto whatever the agent’s depth camera is looking at. The bottom row is
-      the policy, and it’s the exact same network for both arms. The only thing that changes is what
-      it reads: ours reads the costmap, the baseline reads the plain camera image. Everything after
-      that is shared (a CNN encoder and a GRU), and out comes a single action.</figcaption>
+      costmap: calculate the geodesic distance to the goal, get the 3D coordinates of all pixels, and
+      assign that GT distance to every pixel the agent’s depth camera is looking at. The bottom row
+      shows the difference in training input. Our pipeline reads the costmap, the baseline reads the
+      plain camera image. Everything after that is shared (a CNN encoder and a GRU), and out comes a
+      single action.</figcaption>
      </figure>
     <figure class="plot" style="max-width:660px">
       <img src="figs/geodesic_field.png" alt="Top-down geodesic cost-to-goal field">
       <figcaption><strong>What the costmap measures.</strong> Every point is coloured by its
-      geodesic distance to the goal. Dark is close, bright is far. The neat part is how walls bend
-      the picture. The room on the left is only a few metres away in a straight line, but it still
-      counts as <em>far</em>, because the only way there is back out through the doorways. Walk
-      downhill on this field and you get the shortest path (red).
-      <span style="color:var(--muted)">(Drawn on a made-up floorplan to show the idea. The real
-      sensor computes the same thing on the HM3D navmesh.)</span></figcaption>
+      geodesic distance to the goal. Dark means low cost and near the goal, bright means high cost and
+      far. We can see here the room on the left is only a few metres away in a straight line, but it
+      still counts as far, because with the walls the only way there is back out through the doorways.
+      Following the gradient downhill traces the shortest path (red). This is how we navigate through
+      costmaps. <span style="color:var(--muted)">(Schematic on a made-up floorplan; the real sensor
+      computes the same thing on the HM3D navmesh.)</span></figcaption>
     </figure>
     <p><strong>Why two channels.</strong> Our first version used one channel, scaled by the biggest
     distance in the whole house. That was a mistake. Inside a single frame the goal-ward gradient
