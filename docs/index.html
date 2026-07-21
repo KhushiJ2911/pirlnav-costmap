@@ -136,61 +136,69 @@
 <section class="section">
   <div class="container is-max-desktop content">
     <h2 class="title is-3 has-text-centered">Method — the costmap sensor</h2>
-    <p>An online sensor computes the ground-truth geodesic distance from every navigable
-    grid point to the nearest goal (one multi-goal shortest-path query per grid point over
-    the navmesh; KD-tree lookup; cached per scene+category; validated against offline GT to
-    MAE 0.06–0.10 m). Each step it back-projects the agent’s depth image onto that field to
-    produce an egocentric costmap the policy sees instead of RGB.</p>
+    <p>The idea is simple: instead of an RGB image, we hand the policy a picture of how far
+    every visible point is from the goal. Building it takes two steps. Offline, we compute the
+    true geodesic distance — the real walking distance around walls and through doorways, not a
+    straight line — from every navigable spot in the house to the nearest goal. Then, at each
+    step of an episode, we take the agent’s depth image, project every pixel back out into the
+    world, and read off its distance to the goal. What comes back is an egocentric costmap: the
+    same first-person view, except every pixel now says <em>how far the goal is</em> from that
+    point instead of what colour it is. That is what the policy sees, in place of RGB. (We
+    precompute the field once per house and check it against an offline ground truth; it matches
+    to within about 0.1 m.)</p>
     <figure class="plot" style="max-width:960px">
       <img src="figs/method.png" alt="Costmap-conditioned PIRLNav — method overview">
-      <figcaption>The full pipeline. <strong>Top:</strong> an online sensor turns the scene and
-      goal into a ground-truth geodesic cost-to-goal field over the navmesh, then back-projects
-      the agent’s depth onto it to form a 2-channel egocentric costmap. <strong>Bottom:</strong>
-      the policy is identical for both arms — only the input is swapped (costmap for ours, RGB for
-      the baseline) before the shared CNN encoder + GRU predicts the action.</figcaption>
+      <figcaption><strong>The full pipeline.</strong> The top row is the sensor: we take the
+      scene and goal, compute the geodesic cost-to-goal field over the floorplan, and back-project
+      the agent’s depth onto it to get a 2-channel costmap. The bottom row is the policy, and it is
+      the same network in both arms — we only change what goes in. Our arm feeds it the costmap; the
+      RGB baseline feeds it the camera image. Everything after that (a CNN encoder and a GRU) is
+      shared, and it outputs one action.</figcaption>
     </figure>
     <figure class="plot" style="max-width:660px">
       <img src="figs/geodesic_field.png" alt="Top-down geodesic cost-to-goal field">
-      <figcaption>The quantity the costmap encodes: geodesic
-      distance from every point to the goal (dark = near). Walls bend the contours — the
-      isolated left room is geodesically <em>far</em> despite being spatially close, because
-      the path must route through doorways. The agent descends this field (red path).
-      <span style="color:var(--muted)">(Schematic on a synthetic floorplan; the real sensor
-      computes the same field over the HM3D navmesh.)</span></figcaption>
+      <figcaption><strong>What the costmap measures.</strong> Every point is coloured by its
+      geodesic distance to the goal — dark is close, bright is far. The interesting part is that
+      walls bend these contours: the room on the left is only a few metres away in a straight
+      line, but it reads as <em>far</em>, because the only way to the goal is back out through the
+      doorways. Follow the field downhill and you trace the shortest path (red).
+      <span style="color:var(--muted)">(Drawn on a made-up floorplan to show the idea; the real
+      sensor computes the same thing on the HM3D navmesh.)</span></figcaption>
     </figure>
-    <p><strong>The 2-channel fix (a key Phase-1 result).</strong> A naïve 1-channel costmap
-    (globally scaled) left the within-frame gradient spanning only ~4% of the input range —
-    the from-scratch encoder ignored it and the policy collapsed to the action-prior floor.
-    The fix is a 2-channel transform: <strong>channel 0</strong> = absolute cost (“how far
-    is the goal” → the STOP cue), <strong>channel 1</strong> = per-frame contrast-stretched
-    cost (“which way is downhill” → the steering cue).</p>
+    <p><strong>Why two channels.</strong> Our first version used a single channel, scaled by the
+    largest distance in the whole house. That turned out to be a mistake. Within any one frame the
+    goal-ward gradient only spans a few percent of the range, so it looks almost flat — and the
+    encoder, which trains from scratch, simply ignored it and the policy fell back to guessing. The
+    fix was to give it two channels instead. Channel 0 keeps the absolute distance, which tells the
+    agent <em>how far</em> the goal is and when to stop. Channel 1 stretches each frame to full
+    contrast, which makes the <em>direction</em> to the goal obvious. One says how far, the other
+    says which way.</p>
     <figure class="plot" style="max-width:900px">
       <img src="figs/two_channel.png" alt="One real rollout frame under each costmap channel">
-      <figcaption>Why two channels — one real rollout frame. <strong>Left:</strong> the agent’s
-      view down a hallway toward the goal. <strong>Channel 0</strong> (absolute, cost ÷ 30)
-      collapses the real within-frame gradient into ~4% of the range — nearly a flat colour the
-      from-scratch encoder can’t read, though its absolute level still encodes “how far” (the STOP
-      cue). <strong>Channel 1</strong> stretches that same field to full contrast, exposing the
-      downhill direction — here the open doorway toward the goal reads dark. Together they give the
-      policy both <em>how&nbsp;far</em> and <em>which&nbsp;way</em>: the WayPixel-style signal the
-      shortest-path teacher follows. <span style="color:var(--muted)">(White = pixels past the 5 m
-      depth range, where no cost is computed.)</span></figcaption>
+      <figcaption><strong>The two channels on one real frame.</strong> On the left is the agent
+      looking down a hallway toward the goal. Channel 0 (absolute, distance ÷ 30) squashes the real
+      gradient into about 4% of the range — nearly one flat colour the encoder can’t read, though
+      its overall level still says roughly how far the goal is. Channel 1 stretches that exact same
+      frame to full contrast, and now the open doorway toward the goal clearly reads dark. Together
+      they hand the policy both <em>how&nbsp;far</em> and <em>which&nbsp;way</em> — the same kind of
+      signal a shortest-path teacher is already following. <span style="color:var(--muted)">(White =
+      pixels beyond the 5 m depth range, where we can’t compute a cost.)</span></figcaption>
     </figure>
     <h3 class="has-text-centered" style="margin-top:1.8rem">The costmap in action</h3>
     <p class="has-text-centered" style="color:var(--ink2);max-width:660px;margin:.2rem auto 1.2rem">
-      Rollouts on four unseen HM3D houses. In each panel: the agent's first-person view (left)
-      and the live cost-to-goal costmap over that view (right) — dark marks the direction toward
-      the goal, and the agent simply glides down the geodesic field until it arrives.</p>
+      Four rollouts in houses the policy never saw during training. In each one, the left is the
+      agent’s first-person view and the right is the live costmap over that same view. Dark points
+      the way to the goal, and the agent just keeps walking downhill on it until it arrives.</p>
     <div class="columns is-multiline is-2">
       <div class="column is-half"><figure style="margin:0"><img src="figs/rollout_bed.gif" alt="find the bed" style="width:100%;display:block;border:1px solid var(--line);border-radius:10px"><figcaption class="has-text-centered" style="margin-top:.45rem;font-size:.9rem">find the <strong>bed</strong></figcaption></figure></div>
       <div class="column is-half"><figure style="margin:0"><img src="figs/rollout_tv.gif" alt="find the tv" style="width:100%;display:block;border:1px solid var(--line);border-radius:10px"><figcaption class="has-text-centered" style="margin-top:.45rem;font-size:.9rem">find the <strong>tv</strong></figcaption></figure></div>
       <div class="column is-half"><figure style="margin:0"><img src="figs/rollout_sofa.gif" alt="find the sofa" style="width:100%;display:block;border:1px solid var(--line);border-radius:10px"><figcaption class="has-text-centered" style="margin-top:.45rem;font-size:.9rem">find the <strong>sofa</strong></figcaption></figure></div>
       <div class="column is-half"><figure style="margin:0"><img src="figs/rollout_chair.gif" alt="find the chair" style="width:100%;display:block;border:1px solid var(--line);border-radius:10px"><figcaption class="has-text-centered" style="margin-top:.45rem;font-size:.9rem">find the <strong>chair</strong></figcaption></figure></div>
     </div>
-    <p style="margin-top:1.5rem">That is what <em>perfectly</em> descending the costmap looks
-    like — the behaviour I wanted a policy to copy. So the whole internship really comes down to
-    one question: <strong>can a policy actually learn to do this?</strong> I tried it with two
-    different teachers, and they didn’t agree.</p>
+    <p style="margin-top:1.5rem">That is what descending the costmap looks like when it is done
+    <em>perfectly</em> — the behaviour we want a policy to copy. So the whole project really comes
+    down to one question: <strong>can a policy actually learn to do this?</strong> We tried it with
+    two different teachers, and they did not agree.</p>
   </div>
 </section>
 
