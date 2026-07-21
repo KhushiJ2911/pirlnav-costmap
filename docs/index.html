@@ -136,53 +136,51 @@
 <section class="section">
   <div class="container is-max-desktop content">
     <h2 class="title is-3 has-text-centered">Method — the costmap sensor</h2>
-    <p>The idea is simple: instead of an RGB image, we hand the policy a picture of how far
-    every visible point is from the goal. Building it takes two steps. Offline, we compute the
-    true geodesic distance — the real walking distance around walls and through doorways, not a
-    straight line — from every navigable spot in the house to the nearest goal. Then, at each
-    step of an episode, we take the agent’s depth image, project every pixel back out into the
-    world, and read off its distance to the goal. What comes back is an egocentric costmap: the
-    same first-person view, except every pixel now says <em>how far the goal is</em> from that
-    point instead of what colour it is. That is what the policy sees, in place of RGB. (We
-    precompute the field once per house and check it against an offline ground truth; it matches
-    to within about 0.1 m.)</p>
+    <p>The basic idea is that instead of an RGB image, we hand the policy a picture of how far
+    every visible point is from the goal, i.e. our costmap. Building it takes two steps. First,
+    offline, we compute the true geodesic distance from every navigable spot in the house to the
+    nearest goal. Second, we use the agent’s depth camera: for each pixel it already knows the
+    distance from the camera to whatever that pixel is looking at (a wall, the floor, a chair leg),
+    so we project every pixel back out into the world and get the exact 3D point in the house that
+    pixel is seeing. We do this for all the pixels, turning the flat depth image into a cloud of 3D
+    points. We then give each of those 3D points its pre-computed geodesic distance, and that
+    becomes the pixel’s value. That is our egocentric costmap, and it is what our policy sees in
+    place of RGB.</p>
     <figure class="plot" style="max-width:960px">
       <img src="figs/method.png" alt="Costmap-conditioned PIRLNav — method overview">
-      <figcaption><strong>The full pipeline.</strong> The top row is the sensor: we take the
-      scene and goal, compute the geodesic cost-to-goal field over the floorplan, and back-project
-      the agent’s depth onto it to get a 2-channel costmap. The bottom row is the policy, and it is
-      the same network in both arms — we only change what goes in. Our arm feeds it the costmap; the
-      RGB baseline feeds it the camera image. Everything after that (a CNN encoder and a GRU) is
-      shared, and it outputs one action.</figcaption>
+      <figcaption><strong>The full pipeline.</strong> The top row is the sensor. We take the scene
+      and the goal, compute the cost-to-goal field over the floorplan, and paint it onto the agent’s
+      depth to get a 2-channel costmap. The bottom row is the policy. It is the same network in both
+      arms. We only change what goes in: our arm gets the costmap, the RGB baseline gets the camera
+      image. Everything after that (a CNN encoder and a GRU) is shared, and it picks one action.</figcaption>
     </figure>
     <figure class="plot" style="max-width:660px">
       <img src="figs/geodesic_field.png" alt="Top-down geodesic cost-to-goal field">
       <figcaption><strong>What the costmap measures.</strong> Every point is coloured by its
-      geodesic distance to the goal — dark is close, bright is far. The interesting part is that
-      walls bend these contours: the room on the left is only a few metres away in a straight
-      line, but it reads as <em>far</em>, because the only way to the goal is back out through the
-      doorways. Follow the field downhill and you trace the shortest path (red).
-      <span style="color:var(--muted)">(Drawn on a made-up floorplan to show the idea; the real
+      geodesic distance to the goal. Dark is close, bright is far. The neat part is how walls bend
+      the picture. The room on the left is only a few metres away in a straight line, but it still
+      counts as <em>far</em>, because the only way there is back out through the doorways. Walk
+      downhill on this field and you get the shortest path (red).
+      <span style="color:var(--muted)">(Drawn on a made-up floorplan to show the idea. The real
       sensor computes the same thing on the HM3D navmesh.)</span></figcaption>
     </figure>
-    <p><strong>Why two channels.</strong> Our first version used a single channel, scaled by the
-    largest distance in the whole house. That turned out to be a mistake. Within any one frame the
-    goal-ward gradient only spans a few percent of the range, so it looks almost flat — and the
-    encoder, which trains from scratch, simply ignored it and the policy fell back to guessing. The
-    fix was to give it two channels instead. Channel 0 keeps the absolute distance, which tells the
-    agent <em>how far</em> the goal is and when to stop. Channel 1 stretches each frame to full
-    contrast, which makes the <em>direction</em> to the goal obvious. One says how far, the other
-    says which way.</p>
+    <p><strong>Why two channels.</strong> Our first version used one channel, scaled by the biggest
+    distance in the whole house. That was a mistake. Inside a single frame the goal-ward gradient
+    only covers a few percent of the range, so it looks almost flat. The encoder trains from scratch,
+    and it just ignored it, so the policy fell back to guessing. Two channels fixed it. Channel 0
+    keeps the raw distance, so the agent knows <em>how far</em> the goal is and when to stop. Channel
+    1 stretches each frame to full contrast, so the <em>direction</em> to the goal pops out. One says
+    how far, the other says which way.</p>
     <figure class="plot" style="max-width:900px">
       <img src="figs/two_channel.png" alt="One real rollout frame under each costmap channel">
-      <figcaption><strong>The two channels on one real frame.</strong> On the left is the agent
-      looking down a hallway toward the goal. Channel 0 (absolute, distance ÷ 30) squashes the real
-      gradient into about 4% of the range — nearly one flat colour the encoder can’t read, though
-      its overall level still says roughly how far the goal is. Channel 1 stretches that exact same
-      frame to full contrast, and now the open doorway toward the goal clearly reads dark. Together
-      they hand the policy both <em>how&nbsp;far</em> and <em>which&nbsp;way</em> — the same kind of
-      signal a shortest-path teacher is already following. <span style="color:var(--muted)">(White =
-      pixels beyond the 5 m depth range, where we can’t compute a cost.)</span></figcaption>
+      <figcaption><strong>The two channels on one real frame.</strong> On the left, the agent is
+      looking down a hallway toward the goal. Channel 0 (raw distance ÷ 30) squashes the gradient
+      into about 4% of the range, so it is nearly one flat colour the encoder can’t read. Its
+      overall brightness still says roughly how far the goal is. Channel 1 stretches that same frame
+      to full contrast, and now the open doorway toward the goal clearly reads dark. Between them the
+      policy gets both <em>how&nbsp;far</em> and <em>which&nbsp;way</em>, the same signal a
+      shortest-path teacher already follows. <span style="color:var(--muted)">(White = pixels past
+      the 5 m depth range, where we can’t compute a cost.)</span></figcaption>
     </figure>
     <h3 class="has-text-centered" style="margin-top:1.8rem">The costmap in action</h3>
     <p class="has-text-centered" style="color:var(--ink2);max-width:660px;margin:.2rem auto 1.2rem">
