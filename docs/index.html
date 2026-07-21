@@ -113,11 +113,11 @@
       <div class="column is-four-fifths">
         <h2 class="title is-3 has-text-centered">Abstract</h2>
         <p>How well an agent navigates depends heavily on the representation it acts on.
-        <a href="https://arxiv.org/abs/2301.07302">PIRLNav</a> learns ObjectNav end-to-end from
-        RGB — cloning human demonstrations, then finetuning with RL.
-        <a href="https://mast3r-nav.github.io/">MASt3R-Nav</a> shows another path works: hand a
-        small controller a dense per-pixel cost-to-goal map, a “WayPixel costmap”, and it can
-        outperform far heavier end-to-end systems. So I asked a simple question. If a costmap is
+        <a href="https://arxiv.org/abs/2301.07302">PIRLNav</a> learns ObjectNav end-to-end by behavioral cloning of RGB demonstrations of hm3d datset then finetuning with RL.
+        <a href="https://mast3r-nav.github.io/">MASt3R-Nav</a> showed something simpler can work
+        better: instead of a big network learning everything from raw images, you give a small
+        controller a picture where each pixel already says how far the goal is — a “WayPixel
+        costmap” — and it just follows that. That beat much heavier end-to-end systems. So I asked a simple question. If a costmap is
         that good to act on, what happens when PIRLNav is conditioned on one instead of RGB?</p>
         <p>To test the input on its own, I built a costmap-conditioned PIRLNav that sees a
         ground-truth (oracle) geodesic costmap, and put it against an RGB baseline at a matched
