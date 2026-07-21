@@ -112,19 +112,23 @@
     <div class="columns is-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3 has-text-centered">Abstract</h2>
-        <p><a href="https://arxiv.org/abs/2301.07302">PIRLNav</a> trains ObjectNav agents
-        by behavior cloning (BC) on human demonstrations (64.1% success), then RL-finetunes
-        to 70.4%. <a href="https://mast3r-nav.github.io/">MASt3R-Nav</a> shows a dense
-        per-pixel cost-to-goal representation — a “WayPixel costmap” — feeding a small
-        controller can beat end-to-end learning. This internship asks: <em>if PIRLNav’s BC
-        policy is conditioned on an oracle (ground-truth) costmap instead of RGB, does
-        ObjectNav’s difficulty collapse?</em> Over two phases I built a costmap-conditioned
-        PIRLNav and compared it to an RGB baseline at matched budget. With <strong>human
-        demonstrations</strong>, both inputs fail identically on unseen scenes (0% success)
-        — a ceiling set by training budget and perception, not the input. With
-        <strong>shortest-path demonstrations</strong>, the costmap isolates a clear,
-        consistent win over RGB on every metric — evidence that the interface changes which
-        teachers are learnable, even while absolute performance stays capped.</p>
+        <p>What a navigation policy can learn is shaped as much by its input as by its network.
+        <a href="https://arxiv.org/abs/2301.07302">PIRLNav</a> learns ObjectNav end-to-end from
+        RGB — cloning human demonstrations, then finetuning with RL.
+        <a href="https://mast3r-nav.github.io/">MASt3R-Nav</a> shows another path works: hand a
+        small controller a dense per-pixel cost-to-goal map, a “WayPixel costmap”, and it can
+        outperform far heavier end-to-end systems. So I asked a simple question. If a costmap is
+        that good to act on, what happens when PIRLNav is conditioned on one instead of RGB?</p>
+        <p>To test the input on its own, I built a costmap-conditioned PIRLNav that sees a
+        ground-truth (oracle) geodesic costmap, and put it against an RGB baseline at a matched
+        budget. I ran the comparison under two teachers. On <strong>human demonstrations</strong>,
+        both inputs fail the same way on unseen houses — the limit is the teacher and the budget,
+        not what the policy sees. On <strong>shortest-path demonstrations</strong>, which are the
+        very signal a costmap encodes, it flips: the costmap beats RGB on every metric.</p>
+        <p>Absolute performance stays well below PIRLNav’s, since everything here ran on one GPU
+        for under an epoch. But the matched-budget comparison is clean, and it points to one idea:
+        the representation you condition on doesn’t just change how well a policy does — it changes
+        which teachers it can learn from at all.</p>
         <p style="color:var(--ink2)">The rest of this page is how I got there: first the costmap
         sensor itself, then the two experiments — which gave two very different answers.</p>
       </div>
