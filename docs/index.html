@@ -175,23 +175,23 @@
       exposing the “downhill” gradient the agent steers along). This is the WayPixel-style
       signal the shortest-path teacher follows.</figcaption>
     </figure>
-    <h3 class="has-text-centered" style="margin-top:1.7rem">The costmap in action</h3>
-    <figure style="margin:0.7rem 0">
-      <img src="figs/rollout_bed.gif" alt="Agent navigating with its live cost-to-goal costmap" style="width:100%;max-width:780px;display:block;margin:0 auto;border:1px solid var(--line);border-radius:8px">
-      <img src="figs/rollout_topdown.png" alt="Top-down trajectory descending the cost-to-goal field" style="width:100%;max-width:560px;display:block;margin:1rem auto 0;border:1px solid var(--line);border-radius:8px">
-      <figcaption class="has-text-centered">A rollout on a real held-out HM3D scene (find the
-      <em>bed</em>). <strong>Top</strong> — the agent's first-person view (left) beside the live
-      cost-to-goal costmap over that view (right): dark = low geodesic distance to the goal, and
-      the dark region draws closer as the agent advances. <strong>Bottom</strong> — the top-down
-      path, descending the cost field from far (yellow) into the goal (dark). Navigating
-      <em>is</em> just descending the costmap.</figcaption>
-    </figure>
-    <p class="has-text-centered" style="color:var(--ink2);margin-top:1.3rem;margin-bottom:.3rem">More rollouts across other held-out houses:</p>
-    <div class="columns">
-      <div class="column"><img src="figs/rollout_tv.gif" alt="find the tv_monitor" style="width:100%;border:1px solid var(--line);border-radius:8px"><p class="figstep has-text-centered">find the tv</p></div>
-      <div class="column"><img src="figs/rollout_sofa.gif" alt="find the sofa" style="width:100%;border:1px solid var(--line);border-radius:8px"><p class="figstep has-text-centered">find the sofa</p></div>
-      <div class="column"><img src="figs/rollout_chair.gif" alt="find the chair" style="width:100%;border:1px solid var(--line);border-radius:8px"><p class="figstep has-text-centered">find the chair</p></div>
+    <h3 class="has-text-centered" style="margin-top:1.8rem">The costmap in action</h3>
+    <p class="has-text-centered" style="color:var(--ink2);max-width:660px;margin:.2rem auto 1.2rem">
+      Rollouts on four unseen HM3D houses. In each panel: the agent's first-person view (left)
+      and the live cost-to-goal costmap over that view (right) — dark marks the direction toward
+      the goal, and the agent simply glides down the geodesic field until it arrives.</p>
+    <div class="columns is-multiline is-2">
+      <div class="column is-half"><figure style="margin:0"><img src="figs/rollout_bed.gif" alt="find the bed" style="width:100%;display:block;border:1px solid var(--line);border-radius:10px"><figcaption class="has-text-centered" style="margin-top:.45rem;font-size:.9rem">find the <strong>bed</strong></figcaption></figure></div>
+      <div class="column is-half"><figure style="margin:0"><img src="figs/rollout_tv.gif" alt="find the tv" style="width:100%;display:block;border:1px solid var(--line);border-radius:10px"><figcaption class="has-text-centered" style="margin-top:.45rem;font-size:.9rem">find the <strong>tv</strong></figcaption></figure></div>
+      <div class="column is-half"><figure style="margin:0"><img src="figs/rollout_sofa.gif" alt="find the sofa" style="width:100%;display:block;border:1px solid var(--line);border-radius:10px"><figcaption class="has-text-centered" style="margin-top:.45rem;font-size:.9rem">find the <strong>sofa</strong></figcaption></figure></div>
+      <div class="column is-half"><figure style="margin:0"><img src="figs/rollout_chair.gif" alt="find the chair" style="width:100%;display:block;border:1px solid var(--line);border-radius:10px"><figcaption class="has-text-centered" style="margin-top:.45rem;font-size:.9rem">find the <strong>chair</strong></figcaption></figure></div>
     </div>
+    <figure style="margin:1.5rem 0 0">
+      <img src="figs/rollout_topdown.png" alt="Top-down trajectory descending the cost-to-goal field" style="width:100%;max-width:540px;display:block;margin:0 auto;border:1px solid var(--line);border-radius:10px">
+      <figcaption class="has-text-centered">Top-down of the bed rollout — the path descends the
+      geodesic cost-to-goal field, from far (yellow) into the goal (dark). Navigating <em>is</em>
+      just descending the costmap.</figcaption>
+    </figure>
   </div>
 </section>
 
