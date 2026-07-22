@@ -147,7 +147,7 @@
 <hr class="softline">
 <section class="section">
   <div class="container is-max-desktop content">
-    <h2 class="title is-3 has-text-centered">Method — the costmap sensor</h2>
+    <h2 class="title is-3 has-text-centered">Method </h2>
     <p>The basic idea is that instead of an RGB image, we hand the policy a picture of how far
     every visible point is from the goal, i.e. our costmap. Building it takes two steps. First,
     offline, we compute the true geodesic distance from every navigable spot in the house to the
@@ -181,7 +181,7 @@
     <p><strong>Why two channels.</strong> The costmap stores a geodesic distance at every pixel. Across a whole house those distances run from
     0&nbsp;m at the goal to roughly 30&nbsp;m in the farthest corner. Our first version just divided
     every pixel by that global maximum to get a number in [0,&nbsp;1], and handed this single channel to the policy. 
-     Here’s the limitation — In any one first-person frame the agent sees only a small
+     The limitation is that in any one first-person frame the agent sees only a small
     slice of the house, so the points in view might all be, say, 5.5 to 7&nbsp;m from the goal.
     Divided by 30, that entire range collapses into about 0.18–0.23 which is a spread of roughly 4% of the
     input. To a convolutional encoder, the frame is nearly one flat colour (no gradients) which failed training encoder from scratch.</p>
@@ -275,7 +275,7 @@
 <hr class="softline">
 <section class="section">
   <div class="container is-max-desktop content">
-    <h2 class="title is-3 has-text-centered">Results — the whole internship</h2>
+    <h2 class="title is-3 has-text-centered">Results </h2>
     <div class="highlight" style="margin:.4rem 0 1.6rem">
       <p class="lead" style="margin-bottom:.4rem"><strong>The takeaway.</strong> Changing the input
       doesn’t raise the ceiling, but it gave us the idea that changing the teacher makes a difference in how the policy learns.
