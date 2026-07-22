@@ -357,30 +357,6 @@
 </section>
 
 <hr class="softline">
-<section class="section">
-  <div class="container is-max-desktop content">
-    <h2 class="title is-3 has-text-centered">Use of AI tools</h2>
-    <p>Following the reporting guidelines, this section states where and to what extent AI tools
-    were used in this project.</p>
-    <p><strong>This report page and its figures.</strong> The page was built with
-    <a href="https://www.anthropic.com/claude">Claude</a> (Anthropic), used through Claude Code. It
-    produced the page layout and styling, the <strong>method / pipeline diagram</strong> and the
-    <strong>top-down geodesic-field illustration</strong>, and the result <strong>bar charts</strong>
-    drawn from my experiment numbers. The <strong>rollout GIFs</strong> and the
-    <strong>two-channel figure</strong> were produced by Claude-written visualization code run on the
-    actual Habitat simulator outputs — real agent renders and real cost maps, not synthetic imagery.
-    The text was drafted with Claude and then rewritten and edited by me.</p>
-    <p><strong>The research and engineering.</strong> AI tools (primarily Claude) were also used
-    substantially during the internship itself — for example to implement the ground-truth costmap
-    sensor, the training and evaluation pipeline, and a self-healing training wrapper, and to help
-    debug failures and analyse results.</p>
-    <p class="tbl-note">The experiments, training runs and reported numbers are my own (all logged to
-    Weights &amp; Biases); every AI-generated figure was reviewed by me for correctness before it went
-    into this report.</p>
-  </div>
-</section>
-
-<hr class="softline">
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
     <h2 class="title is-3">References</h2>
@@ -394,15 +370,6 @@
 @misc{mast3rnav,
   title  = {MASt3R-Nav: WayPixel Costmaps for Navigation},
   note   = {https://mast3r-nav.github.io/}
-}
-
-@misc{claude2026,
-  title  = {Claude (Opus 4.8)},
-  author = {{Anthropic}},
-  year   = {2026},
-  note   = {Used via Claude Code for this report page, its diagrams,
-            plots and rollout visualizations, and for code assistance
-            during the project. https://www.anthropic.com/claude}
 }</pre>
     <p class="tbl-note">All code, scripts, eval logs and per-checkpoint results are in the
     <a href="https://github.com/KhushiJ2911/pirlnav-costmap">repository</a> (<code>exp2_sp_costmap/</code>);
